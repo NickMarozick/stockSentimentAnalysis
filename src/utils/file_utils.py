@@ -2,11 +2,10 @@ import collections
 import csv
 
 FIELDS = ['name', 'url', 'content', 'description', 'scraper']
-
 Article = collections.namedtuple('Article', FIELDS)
 
-def createArticle(name, blah):
-    return Article(name, blah)
+def createArticle(*FIELDS):
+    return Article(*FIELDS)
 
 
 def saveArticleDetailsToFile(article):
