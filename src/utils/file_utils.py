@@ -1,7 +1,7 @@
 import collections
 import csv
 
-FIELDS = ['stockSymbol', 'name', 'url', 'content', 'description', 'scraper']
+FIELDS = ['stockSymbol', 'name', 'url', 'content', 'description', 'scraper', 'date']
 Article = collections.namedtuple('Article', FIELDS)
 
 def createArticle(*FIELDS):

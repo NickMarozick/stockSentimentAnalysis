@@ -7,26 +7,18 @@ from utils import file_utils
 # need to import
 
 
-def getArticlePerStocks(STOCKS):
-    # return same named tuple
+def getArticlesForMultipleStocks(STOCKS, date):
 
-    #stock_info[]
-
-    url_pattern = ('https://newsapi.org/v2/everything?'
-       'q={0}+stock&'
-       'from={1}&'
-       'sortBy=popularity&'
-       'apiKey=ec07e0116ce8450c8b677e877b2e8761')
+    listArticles=[]
 
     for stock in STOCKS:
-        date = '2019-12-10'
-        url = url_pattern.format(stock, date)
-        response = requests.get(url).json()
+ 
+        articles = getArticlesForStock(stock, date)
 
-        #articles= response["articles"]
+        listArticles.append(articles)
 
+    return listArticles
 
-    return articles
 
 def getArticlesForStock(stockSymbol, date):
 
@@ -42,13 +34,11 @@ def getArticlesForStock(stockSymbol, date):
     listArticles= []
 
     for article in response["articles"]:
-        newTuple= file_utils.createArticle(stockSymbol, article.get('title'), article.get('url'), article.get('content'), article.get('description'), "NewsAPI")
+        newTuple= file_utils.createArticle(stockSymbol, article.get('title'), article.get('url'), article.get('content'), article.get('description'), "NewsAPI", article.get('publishedAt')[:10])
 
         listArticles.append(newTuple)
 
-
-        #namedTuple=(response.get('title'), response.get('url'), response.get('description'), response.get('content'), "NewsAPI") # missing the description field
-
+      
     return listArticles
 
 
@@ -56,4 +46,10 @@ def getArticlesForStock(stockSymbol, date):
 stock = "AAPL"
 date= '2019-12-15'
 
+STOCKS=["AAPL", "NFLX", "AMD"]
+
 print(getArticlesForStock(stock, date))
+
+print('\n')
+
+print(getArticlesForMultipleStocks(STOCKS, date))
