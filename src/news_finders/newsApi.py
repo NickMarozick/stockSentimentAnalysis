@@ -15,7 +15,8 @@ def getArticlesForMultipleStocks(STOCKS, date):
  
         articles = getArticlesForStock(stock, date)
 
-        listArticles.append(articles)
+        #listArticles.append(articles)
+        listArticles.extend(articles)
 
     return listArticles
 
@@ -42,6 +43,39 @@ def getArticlesForStock(stockSymbol, date):
     return listArticles
 
 
+def processArticlesTuple(listArticles):
+
+    #for article in listArticles:
+    #    print(article)
+    #    print('\n')
+
+  
+    results = []
+
+    # Format our article data before writing to file 
+
+    for row in listArticles:
+        tabloid = {}
+        tabloid['Stock Symbol']= row[0]   
+        tabloid['name']= row[1]    
+        tabloid['url']= row[2]   
+        tabloid['content']= row[3]    
+        tabloid['description']= row[4]    
+        tabloid['apiSource']= row[5]    
+        tabloid['date']= row[6]    
+        results.append(tabloid)
+
+    # write to file 
+
+    filename = 'stockArticles2.csv'
+    with open(filename, 'a') as f:
+        w = csv.DictWriter(f,['Stock Symbol', 'name','url','content', 'description', 'apiSource', 'date'])
+        w.writeheader()
+        for article in results:
+            w.writerow(article) 
+       
+
+#Test Runs Below 
 
 stock = "AAPL"
 date= '2019-12-15'
@@ -53,3 +87,5 @@ print(getArticlesForStock(stock, date))
 print('\n')
 
 print(getArticlesForMultipleStocks(STOCKS, date))
+
+processArticlesTuple(getArticlesForMultipleStocks(STOCKS, date))
