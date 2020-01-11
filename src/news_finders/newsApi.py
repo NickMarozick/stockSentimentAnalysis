@@ -15,7 +15,6 @@ def getArticlesForMultipleStocks(STOCKS, date):
  
         articles = getArticlesForStock(stock, date)
 
-        #listArticles.append(articles)
         listArticles.extend(articles)
 
     return listArticles
@@ -44,10 +43,6 @@ def getArticlesForStock(stockSymbol, date):
 
 
 def processArticlesTuple(listArticles):
-
-    #for article in listArticles:
-    #    print(article)
-    #    print('\n')
 
   
     results = []
