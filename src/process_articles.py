@@ -24,7 +24,12 @@ articles= getArticlesForMultipleStocks(STOCKS, date)
 
 #articles.append(article)
 
-print(articles)
+#print(articles)
+
+
+# 1a. Testing the write to CSV file w/o the 2nd portion
+
+newsApi.processArticlesTuple(articles)
 
 # 2. get content per article
 #urls = ['https://www.cnn.com/2019/12/10/media/netflix-stock-sell/index.html']
