@@ -28,7 +28,7 @@ def getArticlesForStock(stockSymbol, date):
         'sortBy=popularity&'
        'apiKey=ec07e0116ce8450c8b677e877b2e8761')
 
-    url= url_pattern.format(stock, date)
+    url= url_pattern.format(stockSymbol, date)
     response = requests.get(url).json()
 
     listArticles= []
