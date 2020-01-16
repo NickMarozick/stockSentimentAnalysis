@@ -30,6 +30,10 @@ def getArticlesForStock(stockSymbol, date):
 
     url= url_pattern.format(stockSymbol, date)
     response = requests.get(url).json()
+    
+
+    print(response)
+
 
     listArticles= []
 
@@ -70,17 +74,3 @@ def processArticlesTuple(listArticles):
             w.writerow(article) 
        
 
-#Test Runs Below 
-
-stock = "AAPL"
-date= '2019-12-15'
-
-STOCKS=["AAPL", "NFLX", "AMD"]
-
-print(getArticlesForStock(stock, date))
-
-print('\n')
-
-print(getArticlesForMultipleStocks(STOCKS, date))
-
-processArticlesTuple(getArticlesForMultipleStocks(STOCKS, date))
