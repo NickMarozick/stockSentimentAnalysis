@@ -1,4 +1,3 @@
-# commented out content_scraper for now
 #from news_finders import content_scraper
 
 from news_finders import newsApi
@@ -11,34 +10,9 @@ STOCKS = ["AAPL", "ABBV", "TXN"]
 
 date= '2019-12-19'
 
-
-# 1. get articles
-
 articles = []
-
-#name, url, content, description, scraper = foo()
-#article = file_utils.createArticle(name, url, content, description, scraper)
-# dict: article['name'] or article.get('name')
-# namedtuple: article.name
-#article.scraper = 'newsapi'
-
 articles = newsApi.getArticlesForMultipleStocks(STOCKS, date)
-
-#articles.append(article)
-
-#print(articles)
-
-
-# 1a. Testing the write to CSV file w/o the 2nd portion
-
 newsApi.processArticlesTuple(articles)
-
-# 2. get content per article
-#urls = ['https://www.cnn.com/2019/12/10/media/netflix-stock-sell/index.html']
-#for url in urls:
-
-
-# commenting out below
 
 #news_scraper = content_scraper.NewsUrlContentScraper()
 #for article in articles:
@@ -55,10 +29,4 @@ newsApi.processArticlesTuple(articles)
 #    print(summary)
 
 
-# 3. write to file
-
-#for article in articles:
-#file_utils.SaveArticleDetailsToFile(article)
-
-# can use processArticlesTuple() function from newsApi.py
 
