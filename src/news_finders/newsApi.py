@@ -33,18 +33,10 @@ def getArticlesForStock(stockSymbol, date):
     return listArticles
 
 
-def processArticlesTuple(listArticles):  
-    results = []
-    # Format our article data before writing to file 
-    
-    # write to file 
+def processArticlesTuple(listArticles):   
     filename = 'stockArticles2.csv'
     with open(filename, 'a') as f:
-        w = csv.DictWriter(f, ['Stock Symbol', 'name', 'url',
-                               'content', 'description',
-                               'apiSource', 'date'])
+        w = csv.DictWriter(f, file_utils.FIELDS)
         w.writeheader()
-        for article in listArticles:
-            w.writerow(list(article))
-       
-
+        for article in listArticles:     
+            w.writerow(dict(article._asdict()))
