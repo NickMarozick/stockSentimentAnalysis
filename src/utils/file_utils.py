@@ -1,8 +1,11 @@
-import collections
+#import collections 
 import csv
+import recordtype
+
 
 FIELDS = ['stockSymbol', 'name', 'url', 'content', 'description', 'scraper', 'date']
-Article = collections.namedtuple('Article', FIELDS)
+#Article = collections.namedtuple('Article', FIELDS)
+Article = recordtype.recordtype('Article', FIELDS)
 
 def createArticle(*FIELDS):
     return Article(*FIELDS)
