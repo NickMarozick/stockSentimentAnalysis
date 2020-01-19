@@ -13,24 +13,33 @@ date= '2019-12-19'
 articles = []
 articles = newsApi.getArticlesForMultipleStocks(STOCKS, date)
 
-newsApi.processArticlesTuple(articles)
+
 
 #news_scraper = content_scraper.NewsUrlContentScraper()
 
 for article in articles:
     news_scraper = content_scraper.NewsUrlContentScraper()
-    print(article)
+    
+    print(article.name)
+    print('\n')
+    print(article.url)
+    print('\n')
+
+
     content = news_scraper.getArticleContent(article.url)
-    print(content)
-    # copy article namedtuple
-    article.scraper = 'content_scraper'
+    
+    #article.scraper = 'content_scraper'
+
+    print(article.content)
+    
     article.content = content
-    print('=============\n\n')
-    keywords = news_scraper.getArticleKeywords(article.url)
-    print(keywords)
-    print('=============\n\n')
-    summary = news_scraper.getArticleSummary(article.url)
-    print(summary)
+    
+    print('\n')
+    
+    print(article.content)
+
+   
+    print('==============================\n\n')
 
 
-
+#file_utils.saveArticleDetailsToFile(articles)
