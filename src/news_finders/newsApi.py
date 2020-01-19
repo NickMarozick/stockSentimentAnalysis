@@ -31,12 +31,3 @@ def getArticlesForStock(stockSymbol, date):
             "NewsAPI", article.get('publishedAt')[:10])
         listArticles.append(newTuple)
     return listArticles
-
-
-def processArticlesTuple(listArticles):   
-    filename = 'stockArticles2.csv'
-    with open(filename, 'a') as f:
-        w = csv.DictWriter(f, file_utils.FIELDS)
-        w.writeheader()
-        for article in listArticles:     
-            w.writerow(dict(article._asdict()))

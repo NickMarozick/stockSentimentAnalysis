@@ -11,12 +11,14 @@ def createArticle(*FIELDS):
     return Article(*FIELDS)
 
 
-def saveArticleDetailsToFile(article):
-    filename = 'stockNewsArticles.csv'
+def saveArticleDetailsToFile(listArticles):
+    filename = 'stockArticles2.csv'
     try:
-        with open(filename, 'a') as f:      # open file in append mode
-            csv_writer = csv.DictWriter(f, FIELDS)
-            csv_writer.writeheader()
-            csv_writer.writerow(article)
-    except Exception as e:  # this is poor form, change to specific exceptions
-        print('Error saving article to file: {}'.format(str(e)))
+        with open(filename, 'a') as f:
+            w = csv.DictWriter(f, FIELDS)
+            w.writeheader()
+            for article in listArticles:
+                w.writerow(dict(article._asdict()))
+    except Exception as e: 
+        print('Error saving articles to file: {}'.format(str(e)))
+
