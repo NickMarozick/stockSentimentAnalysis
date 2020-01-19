@@ -22,7 +22,13 @@ def getArticlesForStock(stockSymbol, date):
        'apiKey=ec07e0116ce8450c8b677e877b2e8761')
     url= url_pattern.format(stockSymbol, date)
     response = requests.get(url).json()
-    #print(response)
+
+    
+    if response["status"]=="error":
+        print(response["message"])
+        exit() 
+
+
     listArticles= []
     for article in response["articles"]:
         newTuple= file_utils.createArticle(
