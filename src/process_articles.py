@@ -8,7 +8,7 @@ from utils import file_utils
 STOCKS = ["AAPL", "ABBV", "TXN"]
 
 
-date= '2019-12-19'
+date= '2019-12-21'
 
 articles = []
 articles = newsApi.getArticlesForMultipleStocks(STOCKS, date)
@@ -32,7 +32,8 @@ for article in articles:
 
     print(article.content)
     
-    article.content = content
+    if content != 'error':
+        article.content = content
     
     print('\n')
     

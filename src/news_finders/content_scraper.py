@@ -20,7 +20,7 @@ class NewsUrlContentScraper():
         if self._article is not None:
             return self._article.text
         else:
-            return ''
+            return 'error'
 
     def getArticleKeywords(self, url):
         if self._article is None:
