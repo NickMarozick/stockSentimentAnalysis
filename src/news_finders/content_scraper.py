@@ -12,6 +12,7 @@ class NewsUrlContentScraper():
             self._article.parse()
         except Exception as e:
             print('Error parsing articles: %s'.format(str(e)))
+            self._article.text="error"
 
     def getArticleContent(self, url):
         if self._article is None:
@@ -20,7 +21,7 @@ class NewsUrlContentScraper():
         if self._article is not None:
             return self._article.text
         else:
-            return 'error'
+            return ''
 
     def getArticleKeywords(self, url):
         if self._article is None:
