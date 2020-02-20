@@ -30,7 +30,7 @@ for article in articles:
     
     #article.scraper = 'content_scraper'
 
-    print(article.content)
+    print('======', article.content)
     
     if content != 'error':
         article.content = content

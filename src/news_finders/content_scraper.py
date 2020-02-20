@@ -6,12 +6,9 @@ class NewsUrlContentScraper():
         self._article = None
 
     def _getArticle(self, url):
-        try:
-            self._article = newspaper.Article(url)
-            self._article.download()
-            self._article.parse()
-        except Exception as e:
-            print('Error parsing articles: %s'.format(str(e)))
+        self._article = newspaper.Article(url)
+        self._article.download()
+        self._article.parse()
 
     def getArticleContent(self, url):
         if self._article is None:
