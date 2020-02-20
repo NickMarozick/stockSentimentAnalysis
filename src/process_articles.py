@@ -25,14 +25,15 @@ for article in articles:
     print(article.url)
     print('\n')
 
+    print(article.content)
+    print('\n')
 
     content = news_scraper.getArticleContent(article.url)
-    
-    #article.scraper = 'content_scraper'
-
-    print('======', article.content)
-    
-    if content != 'error':
+   
+    #print(content) 
+    #print('\n')
+ 
+    if content != "error":
         article.content = content
     
     print('\n')
