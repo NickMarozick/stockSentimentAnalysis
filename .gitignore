@@ -1,3 +1,4 @@
 *.swp
 src/news_finders/list
+src/list
 __pycache__
