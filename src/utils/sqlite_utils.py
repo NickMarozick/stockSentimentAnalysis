@@ -1,4 +1,4 @@
-
+import re
 import sqlite3
 from sqlite3 import Error
 
@@ -13,10 +13,10 @@ def _createConnection(db_file):
         print(sqlite3.version)
     except Error as e:
         print(e)
-    finally:
-        if conn:
-            conn.close()
- 
+    #finally:
+    #    if conn:
+    #        conn.close()
+    return conn 
 
 # create project 
 
@@ -36,25 +36,25 @@ def _createStockArticleTable(conn):
 
 def _insertStockArticle(conn, article):
     
-    sql = 'INSERT INTO stockArticles(stockSymbol, name, url, content, description, scraper, date) VALUES({}, {}, {}, {}, {}, {}, {})'
+    #sql = 'INSERT INTO stockArticles(stockSymbol, name, url, content, description, scraper, date) VALUES({}, {}, {}, {}, {}, {}, {})'
+    sql = 'INSERT INTO stockArticles(stockSymbol, name, url, content, description, scraper, date) VALUES(?, ?, ?, ?, ?, ?, ?)'
           
     try:
         cur = conn.cursor()
-        cur.execute(sql.format(article.stockSymbol, article.name, article.url, article.content, article.description, article.scraper, article.date))
+        #cur.execute(sql.format(article.stockSymbol, re.escape(article.name), re.escape(article.url), re.escape(article.content), re.escape(article.description), re.escape(article.scraper), article.date))
+        cur.execute(sql, (article.stockSymbol, article.name, article.url, article.content, article.description, article.scraper, article.date))
         conn.commit()
         return cur.lastrowid
     except Error as e:
-         print(e)
+         print("Failed to create article", e, article)
 
 
-def insertStockArticles(articles):
-    conn = None
+def insertStockArticles(conn, articles):
     try:
-        conn = sqlite3.connect(db_file)
         for article in articles: 
             _insertStockArticle(conn, article)
-     except Error as e:
-         print(e)     
+    except Error as e:
+        print(e)     
 
 
 def _findStockArticlesForSymbol(conn, stockSymbol):    
@@ -68,4 +68,32 @@ def _findStockArticlesForSymbol(conn, stockSymbol):
     except Error as e:
          print(e)
 
+def _findAllStockArticlesAfterProvidedDate(conn, inputDate):
+    sql = 'SELECT * FROM stockArticles WHERE date >= Convert(datetime, inputDate)'
+
+    try:
+        cur = conn.cursor()
+        cur.execute(sql, inputDate)
+        rows= cur.fetchall()
+        return rows
+    except Error as e:
+         print(e)
+
+# Find All Stock Articles between a date range 
+# All Stock 
+
+
+# ------------------------------------------
+
+
+# Find Stock Articles per Stock Symbol Between a Date Range 
+# Individual Stock 
+
+# ------------------------------------------
+
+# Find Stock Articles per Stock Symbol and After Given Date
+# Individual Stock 
+
+
+# ------------------------------------------
 
