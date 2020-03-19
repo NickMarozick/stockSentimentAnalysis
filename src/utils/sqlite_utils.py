@@ -62,11 +62,11 @@ def _findStockArticlesForSymbol(conn, stockSymbol):
    
     try:
         cur = conn.cursor()
-        cur.execute(sql, (stockSymbol,))         
-        rows= cur.fetchall()
+        cur.execute(sql, (stockSymbol,))
+        rows = cur.fetchall()
         return rows
     except Error as e:
-         print(e)
+        print(e)
 
 def _findAllStockArticlesAfterProvidedDate(conn, inputDate):
     sql = 'SELECT * FROM stockArticles WHERE date >= Convert(datetime, inputDate)'
