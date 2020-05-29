@@ -9,7 +9,7 @@ from utils import sqlite_utils
 STOCKS = ["AAPL", "ABBV", "TXN"]
 
 
-date= '2020-03-04'
+date= '2020-04-29'
 
 articles = []
 articles = newsApi.getArticlesForMultipleStocks(STOCKS, date)
@@ -24,5 +24,5 @@ if conn is None:
 
 #sqlite_utils._createStockArticleTable(conn)
 
-#sqlite_utils.insertStockArticles(conn, articles)
+sqlite_utils.insertStockArticles(conn, articles)
 print(sqlite_utils._findStockArticlesForSymbol(conn, "AAPL")[0])
