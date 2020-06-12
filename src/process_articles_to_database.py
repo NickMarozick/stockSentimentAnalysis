@@ -3,16 +3,19 @@ from news_finders import content_scraper
 from news_finders import newsApi
 from utils import file_utils
 from utils import sqlite_utils
-
-
+from datetime import datetime, timedelta
+  
 
 STOCKS = ["AAPL", "ABBV", "TXN"]
 
 
-date= '2020-04-29'
+date= datetime.today() - timedelta(days=28)
+
+reformatedDate= str(date.month) + "-" + str(date.day) + "-" + str(date.year)
+
 
 articles = []
-articles = newsApi.getArticlesForMultipleStocks(STOCKS, date)
+articles = newsApi.getArticlesForMultipleStocks(STOCKS, reformatedDate)
 
 
 
