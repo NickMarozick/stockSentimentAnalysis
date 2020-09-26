@@ -34,6 +34,19 @@ def _createStockArticleTable(conn):
 
 # update project 
 
+def _createStockPricingTable(conn):
+
+    sql = '''CREATE TABLE IF NOT EXISTS stockPricing(stockSymbol text, date text,
+             low int, high int, opening int, close int, volume int,
+             PRIMARY KEY (stockSymbol))'''
+
+    try:
+        cur = conn.cursor()
+        cur.execute(sql)
+    except Error as e:
+         print(e)
+
+
 def _insertStockArticle(conn, article):
     
     #sql = 'INSERT INTO stockArticles(stockSymbol, name, url, content, description, scraper, date) VALUES({}, {}, {}, {}, {}, {}, {})'
@@ -47,6 +60,7 @@ def _insertStockArticle(conn, article):
         return cur.lastrowid
     except Error as e:
          print("Failed to create article", e, article)
+
 
 
 def insertStockArticles(conn, articles):
