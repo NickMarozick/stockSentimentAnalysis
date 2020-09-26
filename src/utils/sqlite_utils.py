@@ -38,7 +38,7 @@ def _createStockPricingTable(conn):
 
     sql = '''CREATE TABLE IF NOT EXISTS stockPricing(stockSymbol text, date text,
              low int, high int, opening int, close int, volume int,
-             PRIMARY KEY (stockSymbol))'''
+             PRIMARY KEY (stockSymbol, date))'''
 
     try:
         cur = conn.cursor()
@@ -61,7 +61,18 @@ def _insertStockArticle(conn, article):
     except Error as e:
          print("Failed to create article", e, article)
 
+def _insertPrice(conn, stockName, price):
+    
+    #sql = 'INSERT INTO stockPricing(stockSymbol, name, url, content, description, scraper, date) VALUES({}, {}, {}, {}, {}, {}, {})'
+    sql = 'INSERT INTO stockPricing(stockSymbol, date, low, high, opening, close, volume) VALUES(?, ?, ?, ?, ?, ?, ?)'
 
+    try:
+        cur = conn.cursor()
+        cur.execute(sql, (stockName, price['formatted_date'], price['low'], price['high'], price['open'], price['close'], price['volume']))
+        conn.commit()
+        return cur.lastrowid
+    except Error as e:
+         print("Failed to create price data", e, price)
 
 def insertStockArticles(conn, articles):
     try:
@@ -69,6 +80,14 @@ def insertStockArticles(conn, articles):
             _insertStockArticle(conn, article)
     except Error as e:
         print(e)     
+
+
+def insertPrices(conn, stockName, prices):
+    try:
+        for price in prices:
+            _insertPrice(conn, stockName, price)
+    except Error as e:
+        print(e)
 
 
 def _findStockArticlesForSymbol(conn, stockSymbol):    
