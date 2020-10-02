@@ -26,7 +26,7 @@ while True :
         # creating our variable prices, storing all of the data in a list
         if historicalStockPrices[ticker] is None:
             print('Failed to get stock prices')
-            break
+            continue
         
         prices = historicalStockPrices[ticker]['prices']
         sqlite_utils.insertPrices(conn, ticker, prices)	
