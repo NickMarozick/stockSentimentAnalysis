@@ -3,6 +3,8 @@
 
 """
 
+import os
+
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
@@ -11,8 +13,8 @@ from sklearn.naive_bayes import MultinomialNB
 TRAINING_CORPORA = []
 TRAINING_LABELS = []
 CLASSIFIER_TYPE = MultinomialNB
-CLASSIFIER = Train()
-CLASSIFIER_CLASSES = CLASSIFIER.classes_
+#CLASSIFIER = Train()
+#CLASSIFIER_CLASSES = CLASSIFIER.classes_
 
 def TransformData(text):
     """Converts a list of articles into features vectors."""
@@ -47,4 +49,27 @@ def Fit(article):
     print('Results: ', zip(CLASSIFIER_CLASSES, predicted_probs))
 
 
+def ParseFile(data_file):
+    f = open(data_file, 'r')
+    lines = f.readlines()
+    for line in lines:
+        data = line.split()
+        label = data[-1].split(':')[-1]
+        for token in data[:-1:]:
+            word, count = token.split(':')
+            yield (word, count, label)
+        break
 
+
+def ReadTrainingData():
+    """Read data from http://www.cs.jhu.edu/~mdredze/datasets/sentiment/"""
+    data_dir = '/Users/bcopos/Downloads/processed_acl/books'
+    feature_vector = dict()
+    for (dirpath, dirnames, filenames) in os.walk(data_dir): 
+        print(dirpath, dirnames, filenames)
+        for f in filenames:
+            for word, count, label in ParseFile(os.path.join(dirpath, f)):
+                print(word, count, label)
+                pass
+
+ReadTrainingData()
