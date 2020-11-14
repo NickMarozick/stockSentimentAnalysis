@@ -28,4 +28,9 @@ if conn is None:
 #sqlite_utils._createStockArticleTable(conn)
 
 sqlite_utils.insertStockArticles(conn, articles)
+
 print(sqlite_utils._findStockArticlesForSymbol(conn, "AAPL")[0])
+
+#print(sqlite_utils._findAllStockArticlesAfterProvidedDate(conn, "2020-03-09", "AAPL"))
+
+#print(sqlite_utils._findAllStockArticlesBetweenDates(conn, "2020-03-09", "2020-11-14", "AAPL"))

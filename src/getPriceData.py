@@ -12,6 +12,9 @@ if conn is None:
     sys.exit(1)
 sqlite_utils._createStockPricingTable(conn)
 
+print(sqlite_utils._findAllStockPricingBetweenDates(conn, "2020-03-11", "2020-11-14", "AAPL"))
+
+
 while True :
     ticker = input('Enter a stock symbol or to quit program, type quit: ')
     if ticker == 'quit' :
@@ -35,12 +38,4 @@ while True :
     	print("Invalid StockSymbol, no data ", e)
     	continue
 
-			#for price in prices:
-    		#	date=price['formatted_date']
-    		#	low=price['low']
-    		#	high=price['high']
-    		#	opening=price['open']
-    		#	close=price['close']
-    		#	volume=price['volume']
-    		#	print(date, low, high, opening, close, volume)
 

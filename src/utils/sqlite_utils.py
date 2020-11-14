@@ -17,7 +17,6 @@ def _createConnection(db_file):
     #        conn.close()
     return conn 
 
-# create project 
 
 def _createStockArticleTable(conn):
     
@@ -31,7 +30,6 @@ def _createStockArticleTable(conn):
     except Error as e: 
          print(e)
 
-# update project 
 
 def _createStockPricingTable(conn):
 
@@ -48,12 +46,11 @@ def _createStockPricingTable(conn):
 
 def _insertStockArticle(conn, article):
     
-    #sql = 'INSERT INTO stockArticles(stockSymbol, name, url, content, description, scraper, date) VALUES({}, {}, {}, {}, {}, {}, {})'
     sql = 'INSERT INTO stockArticles(stockSymbol, name, url, content, description, scraper, date) VALUES(?, ?, ?, ?, ?, ?, ?)'
           
     try:
         cur = conn.cursor()
-        #cur.execute(sql.format(article.stockSymbol, re.escape(article.name), re.escape(article.url), re.escape(article.content), re.escape(article.description), re.escape(article.scraper), article.date))
+
         cur.execute(sql, (article.stockSymbol, article.name, article.url, article.content, article.description, article.scraper, article.date))
         conn.commit()
         return cur.lastrowid
@@ -61,8 +58,7 @@ def _insertStockArticle(conn, article):
          print("Failed to create article", e, article)
 
 def _insertPrice(conn, stockName, price):
-    
-    #sql = 'INSERT INTO stockPricing(stockSymbol, name, url, content, description, scraper, date) VALUES({}, {}, {}, {}, {}, {}, {})'
+   
     sql = 'INSERT INTO stockPricing(stockSymbol, date, low, high, opening, close, volume) VALUES(?, ?, ?, ?, ?, ?, ?)'
 
     try:
@@ -100,32 +96,66 @@ def _findStockArticlesForSymbol(conn, stockSymbol):
     except Error as e:
         print(e)
 
-def _findAllStockArticlesAfterProvidedDate(conn, inputDate):
-    sql = 'SELECT * FROM stockArticles WHERE date >= Convert(datetime, inputDate)'
+# Find Stock Articles per Stock Symbol and After Given Date
+# YYYY-MM-DD date format 
+
+
+def _findAllStockArticlesAfterProvidedDate(conn, inputDate, inputSymbol):
+    sql = 'SELECT * FROM stockArticles WHERE date > ? AND stockSymbol=?'
 
     try:
         cur = conn.cursor()
-        cur.execute(sql, inputDate)
+        cur.execute(sql, (inputDate, inputSymbol))
         rows= cur.fetchall()
         return rows
     except Error as e:
          print(e)
 
-# Find All Stock Articles between a date range 
-# All Stock 
+
+# Find Stock Articles per Stock Symbol and Before Given Date
 
 
-# ------------------------------------------
+def _findAllStockArticlesBeforeProvidedDate(conn, inputDate, inputSymbol):
+    sql = 'SELECT * FROM stockArticles WHERE date < ? AND stockSymbol=?'
+
+    try:
+        cur = conn.cursor()
+        cur.execute(sql, (inputDate, inputSymbol))
+        rows= cur.fetchall()
+        return rows
+    except Error as e:
+         print(e)
 
 
 # Find Stock Articles per Stock Symbol Between a Date Range 
-# Individual Stock 
+# YYYY-MM-DD format
+
+def _findAllStockArticlesBetweenDates(conn, startDate, endDate, inputSymbol):
+    sql = 'SELECT * FROM stockArticles WHERE date >= ? AND date <= ? AND stockSymbol=?'
+
+    try:
+        cur = conn.cursor()
+        cur.execute(sql, (startDate, endDate, inputSymbol))
+        rows= cur.fetchall()
+        return rows
+    except Error as e:
+         print(e)
+
+
 
 # ------------------------------------------
+#dates should be in YYYY-MM-DD format for searching
 
-# Find Stock Articles per Stock Symbol and After Given Date
-# Individual Stock 
+def _findAllStockPricingBetweenDates(conn, startDate, endDate, inputSymbol):
+    sql = 'SELECT * FROM stockPricing WHERE date >= ? AND date <= ? AND stockSymbol=?'
 
+    try:
+        cur = conn.cursor()
+        cur.execute(sql, (startDate, endDate, inputSymbol))
+        rows= cur.fetchall()
+        return rows
+    except Error as e:
+         print(e)
 
 # ------------------------------------------
 
