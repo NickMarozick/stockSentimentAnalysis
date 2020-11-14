@@ -1,7 +1,7 @@
 import re
 import sqlite3
 from sqlite3 import Error
-
+import pandas
 
 #database connection  
  
