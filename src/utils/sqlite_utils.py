@@ -101,7 +101,7 @@ def _findStockArticlesForSymbol(conn, stockSymbol):
 
 
 def _findAllStockArticlesAfterProvidedDate(conn, inputDate, inputSymbol):
-    sql = 'SELECT * FROM stockArticles WHERE date > ? AND stockSymbol=?'
+    sql = 'SELECT * FROM stockArticles WHERE date > ? AND stockSymbol=? ORDER BY date DESC'
 
     try:
         cur = conn.cursor()
@@ -116,7 +116,7 @@ def _findAllStockArticlesAfterProvidedDate(conn, inputDate, inputSymbol):
 
 
 def _findAllStockArticlesBeforeProvidedDate(conn, inputDate, inputSymbol):
-    sql = 'SELECT * FROM stockArticles WHERE date < ? AND stockSymbol=?'
+    sql = 'SELECT * FROM stockArticles WHERE date < ? AND stockSymbol=? ORDER BY date DESC'
 
     try:
         cur = conn.cursor()
@@ -131,7 +131,7 @@ def _findAllStockArticlesBeforeProvidedDate(conn, inputDate, inputSymbol):
 # YYYY-MM-DD format
 
 def _findAllStockArticlesBetweenDates(conn, startDate, endDate, inputSymbol):
-    sql = 'SELECT * FROM stockArticles WHERE date >= ? AND date <= ? AND stockSymbol=?'
+    sql = 'SELECT * FROM stockArticles WHERE date >= ? AND date <= ? AND stockSymbol=? ORDER BY date DESC'
 
     try:
         cur = conn.cursor()
@@ -147,7 +147,7 @@ def _findAllStockArticlesBetweenDates(conn, startDate, endDate, inputSymbol):
 #dates should be in YYYY-MM-DD format for searching
 
 def _findAllStockPricingBetweenDates(conn, startDate, endDate, inputSymbol):
-    sql = 'SELECT * FROM stockPricing WHERE date >= ? AND date <= ? AND stockSymbol=?'
+    sql = 'SELECT * FROM stockPricing WHERE date >= ? AND date <= ? AND stockSymbol=? ORDER BY date DESC'
 
     try:
         cur = conn.cursor()
