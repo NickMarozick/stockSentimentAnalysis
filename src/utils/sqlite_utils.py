@@ -161,7 +161,7 @@ def _findAllStockPricingBetweenDates(conn, startDate, endDate, inputSymbol):
 
 
 def _findAllStockPricingForStockSymbol(conn, inputSymbol):
-    sql= 'SELECT date, close FROM stockPricing WHERE stockSymbol= ? ORDER BY date DESC'
+    sql= 'SELECT date, close FROM stockPricing WHERE stockSymbol= ? ORDER BY date ASC'
 
     try:
         cur = conn.cursor()
