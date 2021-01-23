@@ -9,17 +9,17 @@ ticker= 'AAPL'
 
 yahoo_financials = YahooFinancials(ticker)
 
-# call to the YahooFinance tool function 
+# call to the YahooFinance tool function
 
 historicalStockPrices=yahoo_financials.get_historical_price_data("2020-06-09", "2020-07-08", "daily")
 
-# creating our variable prices, storing all of the data in a list 
+# creating our variable prices, storing all of the data in a list
 
 prices=historicalStockPrices['AAPL']['prices']
 
 
 
-# connecting to the database 
+# connecting to the database
 
 conn= sqlite_utils._createConnection(r"/var/stockSA/stockPricing.db")
 
