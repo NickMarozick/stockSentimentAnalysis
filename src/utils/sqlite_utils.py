@@ -5,7 +5,7 @@ import pandas
 
 #database connection
 
-def _createConnection(db_file):
+def createConnection(db_file):
     """ create a database connection to a SQLite database """
     conn = None
     try:

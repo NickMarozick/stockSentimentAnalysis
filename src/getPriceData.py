@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 
 # connecting to the database
-conn = sqlite_utils._createConnection(r"/var/stockSA/stockPricing.db")
+conn = sqlite_utils.createConnection(r"/var/stockSA/stockPricing.db")
 if conn is None:
     print("Failed to open database connection")
     sys.exit(1)
@@ -20,22 +20,27 @@ while True :
     if ticker == 'quit' :
         quit()
 
-    try: 
-        yahoo_financials = YahooFinancials(ticker) 
+    try:
+        yahoo_financials = YahooFinancials(ticker)
+        print(yahoo_financials)
+
         # call to the YahooFinance tool function
         historicalStockPrices = yahoo_financials.get_historical_price_data(
                 "2020-06-09", "2020-07-08", "daily")
-        
+        if historicalStockPrices is None:
+            print("error")
+            continue
+        else:
+            print(historicalStockPrices)
+
         # creating our variable prices, storing all of the data in a list
         if historicalStockPrices[ticker] is None:
             print('Failed to get stock prices')
             continue
-        
-        prices = historicalStockPrices[ticker]['prices']
-        sqlite_utils.insertPrices(conn, ticker, prices)	
 
-    except Exception as e: 
+        prices = historicalStockPrices[ticker]['prices']
+        sqlite_utils.insertPrices(conn, ticker, prices)
+
+    except Exception as e:
     	print("Invalid StockSymbol, no data ", e)
     	continue
-
-

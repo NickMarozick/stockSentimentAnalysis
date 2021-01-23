@@ -1,5 +1,15 @@
 import sys
 from datetime import datetime, timedelta
+import recordtype
+
+
+FIELDS = ['stockSymbol', 'name', 'url', 'content', 'description', 'scraper', 'date']
+
+Article = recordtype.recordtype('Article', FIELDS)
+
+def createArticle(*FIELDS):
+    return Article(*FIELDS)
+
 
 def getMaxDateForStockArticles()->str:
     """ This function uses datetime to calculate the maximum date from today

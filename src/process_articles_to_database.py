@@ -4,7 +4,7 @@ from news_finders import newsApi
 from utils import file_utils
 from utils import sqlite_utils
 from datetime import datetime, timedelta
-  
+
 
 STOCKS = ["AAPL", "ABBV", "TXN"]
 
@@ -19,9 +19,9 @@ articles = newsApi.getArticlesForMultipleStocks(STOCKS, reformatedDate)
 
 
 
-conn= sqlite_utils._createConnection(r"/var/stockSA/stockSentiment.db")
+conn= sqlite_utils.createConnection(r"/var/stockSA/stockSentiment.db")
 
-if conn is None: 
+if conn is None:
     print("Failed to open database connection")
     sys.exit(1)
 
