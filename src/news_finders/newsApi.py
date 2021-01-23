@@ -28,7 +28,7 @@ def getArticlesForStock(stockSymbol, date):
 
     listArticles= []
     for article in response["articles"]:
-        newTuple= file_utils.createArticle(
+        newTuple= helper_functions.createArticle(
             stockSymbol, article.get('title'), article.get('url'),
             article.get('content'), article.get('description'),
             "NewsAPI", article.get('publishedAt')[:10])
