@@ -20,13 +20,15 @@ def getAndStoreStockPricingData(ticker, conn):
 
 def userSearchAndStoreStockPricingLoop(conn):
     while True:
-        ticker = input('Enter a stock symbol or to quit program, type quit: ')
-        if ticker == 'quit' :
-            quit()
+        ticker = input('Enter a stock symbol or to quit program, type done: ')
+        if ticker == "done" :
+            break
+            #sys.exit(0)
 
-        try:
-            prices= getStockDataAllTime(ticker)
-            getAndStoreStockPricingData(ticker, conn)
+        else:
+            try:
+                prices= getStockDataAllTime(ticker)
+                getAndStoreStockPricingData(ticker, conn)
 
-        except Exception as e:
-            print("Invalid StockSymbol, no data", e)
+            except Exception as e:
+                print("Invalid StockSymbol, no data", e)

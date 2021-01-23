@@ -4,6 +4,15 @@ from sqlite3 import Error
 import pandas
 
 #database connection
+def setUpArticleDatabase():
+    connection_article_database = createConnection(r"/var/stockSA/stockSentiment.db")
+    _createStockArticleTable(connection_article_database)
+    return connection_article_database
+
+def setUpPricingDatabase():
+    connection_pricing_database = createConnection(r"/var/stockSA/stockPricing.db")
+    _createStockPricingTable(connection_pricing_database)
+    return connection_pricing_database
 
 def createConnection(db_file):
     """ create a database connection to a SQLite database """

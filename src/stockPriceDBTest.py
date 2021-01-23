@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 # connecting to the database
 
-conn= sqlite_utils._createConnection(r"/var/stockSA/stockPricing.db")
+conn= sqlite_utils.createConnection(r"/var/stockSA/stockPricing.db")
 
 if conn is None:
     print("Failed to open database connection")
