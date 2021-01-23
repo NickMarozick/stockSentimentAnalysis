@@ -1,9 +1,6 @@
 
-#import csv
 import requests
-#import xlsxwriter
-
-from utils import file_utils
+from utils import helper_functions
 
 
 def getArticlesForMultipleStocks(stocks, date):
