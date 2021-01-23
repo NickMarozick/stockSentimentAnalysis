@@ -1,7 +1,7 @@
 
-import csv
+#import csv
 import requests
-import xlsxwriter
+#import xlsxwriter
 
 from utils import file_utils
 
@@ -23,10 +23,10 @@ def getArticlesForStock(stockSymbol, date):
     url= url_pattern.format(stockSymbol, date)
     response = requests.get(url).json()
 
-    
+
     if response["status"]=="error":
         print(response["message"])
-        exit() 
+        exit()
 
 
     listArticles= []
