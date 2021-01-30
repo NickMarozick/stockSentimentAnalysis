@@ -3,3 +3,4 @@ src/news_finders/list
 src/list
 __pycache__
 *_test.py
+.ipynb_checkpoints
