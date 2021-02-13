@@ -1,6 +1,7 @@
 import sys
 from datetime import datetime, timedelta
 import recordtype
+import re
 
 
 FIELDS = ['stockSymbol', 'name', 'url', 'content', 'description', 'scraper', 'date']
@@ -48,3 +49,84 @@ def getTodaysDate():
     date= datetime.today()
     reformatedDate= str(date.year) + "-" + str(date.month) + "-" + str(date.day)
     return reformatedDate
+
+
+def askUserForDates():
+    validStart=0
+    while validStart == 0:
+        startDate= input("""Input a start date for stock price and article
+        data in the format: YYYY-MM-DD\n""")
+
+        validStart= validateDate(startDate)
+
+    endDate= askUserForEndDate(startDate)
+
+    print("Start Date: ", startDate)
+    print("End Date: ", endDate)
+
+
+def validateDate(dateString):
+    try:
+        date= datetime.strptime(dateString, '%Y-%m-%d')
+        #print(date)
+        #print("validDate")
+        todaysDate= getTodaysDate()
+        if dateString > todaysDate:
+            print("Invalid date: future date entered")
+            return 0;
+        else:
+            return 1;
+    except:
+        print("Invalid date: Input date must be YYYY-MM-DD. Month input max 12, day input max 31 (on select months)\n")
+        return 0;
+
+
+def askUserForEndDate(startDate):
+    valid=0
+    while valid==0:
+        endDate= input("""\nInput an end date for the stock price and article
+        data in the format: YYYY-MM-DD\n""")
+        if validateDate(endDate) == 0:
+            continue
+        elif startDate > endDate:
+            matched=None
+            print("Invalid end date: it is earler than the start date\n")
+            continue
+        valid=1
+
+    return endDate
+
+
+def getStockTickersFromUser():
+    """ This function asks the user to input individual or multiple stock
+    tickers comma seperated that the user would like analyzed
+
+    Returns:
+        an array of stock tickers
+    """
+    stocks=""
+
+    stockArray=[]
+
+    done=0
+
+    while done == 0:
+
+        stocks= input("Input individual stock ticker to analyze or multiple comma seperated stock tickers. If done, write 'done'\n")
+
+        stocks= stocks.split(',')
+
+        for stock in stocks:
+            stock= stock.strip(" ")
+
+            if stock == "done":
+                done=1
+                break
+
+            elif stock in stockArray :
+                continue
+
+            else:
+                stockArray.append(stock)
+
+    return stockArray

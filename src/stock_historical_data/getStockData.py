@@ -19,6 +19,11 @@ def getAndStoreStockPricingData(ticker, conn):
     prices = getStockDataAllTime(ticker)
     sqlite_utils.insertPrices(conn, ticker, prices)
 
+def getAndStoreMultipleStocksPricingData(stocks, conn):
+    for stock in stocks:
+        prices = getStockDataAllTime(stock)
+        sqlite_utils.insertPrices(conn, stock, prices)
+
 def _getPriceDataForTicker(ticker, conn):
     try:
         prices = getStockDataAllTime(ticker)
@@ -45,4 +50,3 @@ def userSearchAndStoreStockPricingLoop(conn):
                     _getPriceDataForTicker(ticker, conn)
             else:
                 _getPriceDataForTicker(ticker, conn)
-

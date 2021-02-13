@@ -164,3 +164,42 @@ def _findAllStockPricingForStockSymbol(conn, inputSymbol):
         return rows
     except Error as e:
          print(e)
+
+def fetchStockDataOverview(connPricing, connArticle, STOCKS):
+    sqlPricingCount='SELECT COUNT(stockSymbol) FROM stockPricing WHERE stockSymbol = ?'
+    sqlPricingMinDate= 'SELECT MIN(date) FROM stockPricing WHERE stockSymbol= ?'
+    sqlPricingMaxDate= 'SELECT MAX(date) FROM stockPricing WHERE stockSymbol= ?'
+    sqlArticleCount='SELECT COUNT(stockSymbol) FROM stockArticles WHERE stockSymbol= ?'
+    sqlArticleMinDate= 'SELECT MIN(date) FROM stockArticles WHERE stockSymbol= ?'
+    sqlArticleMaxDate= 'SELECT MAX(date) FROM stockArticles WHERE stockSymbol= ?'
+
+    data={}
+
+    for stock in STOCKS:
+        try:
+            pricingCur = connPricing.cursor()
+            articleCur = connArticle.cursor()
+
+            pricingCur.execute(sqlPricingCount, (stock,))
+            pricingRowCount= pricingCur.fetchone()[0]
+            pricingCur.execute(sqlPricingMinDate, (stock,))
+            pricingMinDate= pricingCur.fetchone()[0]
+            pricingCur.execute(sqlPricingMaxDate, (stock,))
+            pricingMaxDate= pricingCur.fetchone()[0]
+
+            articleCur.execute(sqlArticleCount, (stock, ))
+            articleRowCount=articleCur.fetchone()[0]
+            articleCur.execute(sqlArticleMinDate, (stock, ))
+            articleMinDate=articleCur.fetchone()[0]
+            articleCur.execute(sqlArticleMaxDate, (stock, ))
+            articleMaxDate=articleCur.fetchone()[0]
+
+            data[stock]=[pricingRowCount, pricingMinDate, pricingMaxDate, articleRowCount, articleMinDate, articleMaxDate]
+
+        except Error as e:
+             print(e)
+
+    print ("{:<8} {:<15} {:<18} {:<18} {:<15} {:<18} {:<18}".format('Ticker','Pricing Rows','Pricing Min Date','Pricing Max Date', 'Article Rows', 'Article Min Date', 'Article Max Date'))
+    for k,v in data.items():
+        pricingRowCount, pricingMinDate, pricingMaxDate, articleRowCount, articleMinDate, articleMaxDate = v
+        print ("{:<8} {:<15} {:<18} {:<18} {:<15} {:<18} {:<18}".format(str(k), str(pricingRowCount), str(pricingMinDate), str(pricingMaxDate), str(articleRowCount), str(articleMinDate), str(articleMaxDate)))

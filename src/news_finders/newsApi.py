@@ -1,6 +1,6 @@
-
 import requests
 from utils import helper_functions
+from utils import sqlite_utils
 
 
 def getArticlesForMultipleStocks(stocks, date):
@@ -10,6 +10,12 @@ def getArticlesForMultipleStocks(stocks, date):
         listArticles.extend(articles)
     return listArticles
 
+def getAndStoreArticlesForMultipleStocks(stocks, date, conn):
+    listArticles= []
+    for stock in stocks:
+        articles = getArticlesForStock(stock, date)
+        listArticles.extend(articles)
+    sqlite_utils.insertStockArticles(conn, listArticles)
 
 def getArticlesForStock(stockSymbol, date):
     url_pattern = ('https://newsapi.org/v2/everything?'
