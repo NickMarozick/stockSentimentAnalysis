@@ -52,6 +52,17 @@ def getTodaysDate():
 
 
 def askUserForDates():
+    """
+    This function takes in user input for start date and end date in the format: YYYY-MM-DD
+
+    Returns:
+        returns 4 values of formatted start dates for the different utils in the following order:
+        startDate: YYYY-MM-DD   (works for stockData pricing)
+        endDate: YYYY-MM-DD     (works for stockData pricing)
+        reformattedStartDate: MM-DD-YYYY     (works for newsApi stockArticles)
+        reformattedEndDate: MM-DD-YYYY       (works for newsApi stockArticles)
+
+    """
     validStart=0
     while validStart == 0:
         startDate= input("""Input a start date for stock price and article
@@ -61,15 +72,31 @@ def askUserForDates():
 
     endDate= askUserForEndDate(startDate)
 
-    print("Start Date: ", startDate)
-    print("End Date: ", endDate)
+    reformattedStartDate, reformattedEndDate = adaptDateForSources(startDate, endDate)
 
+    return startDate, endDate, reformattedStartDate, reformattedEndDate
+
+
+
+def adaptDateForSources(startDate, endDate):
+    """
+    This function takes in input for start date and end date in the format: YYYY-MM-DD
+
+    Returns:
+        reformatedDate in the form: "MM-DD-YYYY"
+    """
+    startDatetime= datetime.strptime(startDate, '%Y-%m-%d')
+    endDatetime= datetime.strptime(endDate, '%Y-%m-%d')
+
+    reformattedStartDate= str(startDatetime.month) + "-" + str(startDatetime.day) + "-" + str(startDatetime.year)
+    reformattedEndDate= str(endDatetime.month) + "-" + str(endDatetime.day) + "-" + str(endDatetime.year)
+
+    return reformattedStartDate, reformattedEndDate
 
 def validateDate(dateString):
     try:
         date= datetime.strptime(dateString, '%Y-%m-%d')
-        #print(date)
-        #print("validDate")
+
         todaysDate= getTodaysDate()
         if dateString > todaysDate:
             print("Invalid date: future date entered")
