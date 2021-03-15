@@ -30,7 +30,7 @@ def get_avg_3_month_volume(tableRowString):
     avg3MonthVolume= re.search('Avg Vol \(3 month\)" class="Va\(m\) Ta\(end\) Pstart\(20px\) Fz\(s\)" colspan="" data-reactid="[0-9]*"><!-- react-text: [0-9]* -->[0-9.,M]*', tableRowString)
     avg3MonthVolume = avg3MonthVolume.group()
     #avg3MonthVolume= (re.search('>[0-9]*[.,][0-9M]*', avg3MonthVolume)).group()
-    avg3MonthVolume= (re.search('>[0-9.,M]*', avg3MonthVolume)).group()
-    avg3MonthVolume= avg3MonthVolume[1:]
-
+    avg3MonthVolume= (re.search('-->[0-9.,M]*', avg3MonthVolume)).group()
+    avg3MonthVolume= avg3MonthVolume[3:]
+    #print(avg3Month)
     return avg3MonthVolume
