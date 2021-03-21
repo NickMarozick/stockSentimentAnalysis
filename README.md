@@ -18,12 +18,14 @@ TBD
 - content scraper (content_scraper.py)
 - sqlite utils functions (create db, create table, insert articles, find
   articles by symbol, find articles after date)
+- stock historical data theough Yahoo Finance API (stock_historical_data)
+- Jupyter notebook for analysis and visualizations
+- database and helper functions for stock data
 
 ## ToDo
 
 - sentiment analysis (sklearn_sa.py)
 - ground truth for articles summary (positive or negative, binary)
 - method for comparing senitment analysis results with ground truth
-- stock data scraper (Yahoo Finance API?)
-- database (and helper functions) for stock data
-- Python/Jupyter notebook for analysis and visualizations
+- alert mechanisms for gaining stocks
+
