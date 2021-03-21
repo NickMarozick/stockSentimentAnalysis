@@ -19,9 +19,15 @@ def get_trade_volume(tableRowString):
     return tradeVolume
 
 def get_change_percentage(tableRowString):
-    changePercentage = re.search('data-reactid="[0-9]*">([+-][0-9]*|0)*.[0-9]*%', tableRowString)
+    #print(tableRowString)
+    changePercentage = re.search('data-reactid="[0-9]*">([+-][0-9,]*|0)*.[0-9]*%', tableRowString)
+    print(changePercentage)
+    if changePercentage is None:
+        changePercentage = "None"
+        print(tableRowString)
+        return changePercentage
     changePercentage = changePercentage.group()
-    changePercentage = (re.search('([+-][0-9]*|0)*.[0-9]*%', changePercentage)).group()
+    changePercentage = (re.search('([+-][0-9,]*|0)*.[0-9]*%', changePercentage)).group()
 
     return changePercentage
 
