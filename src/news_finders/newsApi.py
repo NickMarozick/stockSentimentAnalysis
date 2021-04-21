@@ -12,8 +12,19 @@ def getArticlesForMultipleStocks(stocks, date):
 
 def getAndStoreArticlesForMultipleStocks(stocks, date, conn):
     listArticles= []
+
     for stock in stocks:
-        articles = getArticlesForStock(stock, date)
+        last_article_entry_date = sqlite_utils.check_if_stored_article_data_for_input_symbol(conn, stock)
+        print(last_article_entry_date)
+        if last_article_entry_date == "None":
+            articles = getArticlesForStock(stock, date)
+        elif last_article_entry_date is None:
+            articles = getArticlesForStock(stock, date)
+        else:
+            revisedDate = helper_functions.incrementDate(last_article_entry_date)
+            search_from_date = helper_functions.compareArticleDates(revisedDate, date)
+            articles = getArticlesForStock(stock, search_from_date)
+        #articles = getArticlesForStock(stock, date)
         listArticles.extend(articles)
     sqlite_utils.insertStockArticles(conn, listArticles)
 

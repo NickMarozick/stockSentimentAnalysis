@@ -155,11 +155,11 @@ selectedLosers = colLoss.multiselect('Select Top Losers to Query', topLosers)
 
 if selectedGainers:
     stocksToQuery.extend(selectedGainers)
-    colGain.write(stocksToQuery)
+    #colGain.write(stocksToQuery)
 
 if selectedLosers:
     stocksToQuery.extend(selectedLosers)
-    colLoss.write(stocksToQuery)
+    #colLoss.write(stocksToQuery)
 # Added
 
 #--------------------------------------------------------------#

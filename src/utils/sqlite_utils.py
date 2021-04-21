@@ -3,6 +3,7 @@ import sqlite3
 from sqlite3 import Error
 import pandas
 
+
 #database connection
 def setUpArticleDatabase():
     connection_article_database = createConnection(r"/var/stockSA/stockSentiment.db")
@@ -164,6 +165,31 @@ def _findAllStockPricingForStockSymbol(conn, inputSymbol):
         return rows
     except Error as e:
          print(e)
+
+def check_if_stored_article_data_for_input_symbol(connArticle, inputSymbol: str):
+    sql = 'SELECT MAX (date) FROM stockArticles WHERE stockSymbol = ?'
+
+    try:
+        cur = connArticle.cursor()
+        cur.execute(sql, (inputSymbol,))
+        result = cur.fetchone()
+        result = result[0]
+        return result
+    except Error as e:
+        print(e)
+
+def check_if_stored_price_data_for_input_symbol(connPricing, inputSymbol: str):
+    sql = 'SELECT MAX (date) FROM stockPricing WHERE stockSymbol = ?'
+
+    try:
+        cur = connPricing.cursor()
+        cur.execute(sql, (inputSymbol,))
+        result = cur.fetchone()
+        result = result[0]
+        return result
+    except Error as e:
+        print(e)
+
 
 def fetchStockDataOverview(connPricing, connArticle, STOCKS):
     sqlPricingCount='SELECT COUNT(stockSymbol) FROM stockPricing WHERE stockSymbol = ?'

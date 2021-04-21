@@ -50,6 +50,49 @@ def getTodaysDate():
     reformatedDate= str(date.year) + "-" + str(date.month) + "-" + str(date.day)
     return reformatedDate
 
+def incrementDate(dateInput):
+        '''
+        This function takes a date string in the format (YYYY-MM-DD), converts
+        into a datetime object, increments by one day, converts the datetime
+        back into a formatted string, and returns the incremented date string
+
+        Input : date string in the format YYYY-MM-DD
+
+        Returns: date string in the format YYYY-MM-DD, incremented by one day
+        '''
+        dateInput = dateInput.split("-")
+        datetime_date = datetime(int(dateInput[0]), int(dateInput[1]), int(dateInput[2]))
+        datetime_date += timedelta(days=1)
+
+        incremented_date = str(datetime_date.year) + "-" + str(datetime_date.month) + "-" + str(datetime_date.day)
+
+        return incremented_date
+
+def compareArticleDates(latest_database_date, max_date):
+    '''
+    This function compares two different formatted dates, one from
+    our article database in the format "YYYY-MM-DD" and the max amount of days
+    that we can dig up article data from (1 month prior) in the format
+    "MM-DD-YYYY". Whichever date is later is returned in the format "MM-DD-YYYY",
+    which our newsAPI prefers for queries.
+    '''
+    latest_database_date = latest_database_date.split("-")
+    datetime_database_date = datetime(int(latest_database_date[0]), int(latest_database_date[1]), int(latest_database_date[2]))
+
+    max_date = max_date.split("-")
+    datetime_max_date = datetime(int(max_date[2]), int(max_date[0]), int(max_date[1]))
+
+    if datetime_database_date > datetime_max_date:
+        # if the database has a closer date to present than max date, return database date
+        search_from_date = latest_database_date[1] + "-" + latest_database_date[2] + "-" + latest_database_date[0]
+        #print(search_from_date)
+        return search_from_date
+    else:
+        # if max date is closer to present than the database date or equal, return max date
+        search_from_date = max_date[0] + "-" + max_date[1] + "-" + max_date[2]
+        #print(search_from_date)
+        return search_from_date
+
 
 def askUserForDates():
     """

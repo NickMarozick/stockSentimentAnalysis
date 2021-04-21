@@ -15,13 +15,36 @@ def getStockDataAllTime(ticker):
     prices = historicalStockPrices[ticker]["prices"]
     return prices
 
+# New Function
+def get_stock_data_from_date(ticker, date):
+    today = helper_functions.getTodaysDate()
+    yahoo_financials = setTicker(ticker)
+    historicalStockPrices = yahoo_financials.get_historical_price_data(date,
+        today, "daily")
+    prices = historicalStockPrices[ticker]["prices"]
+    return prices
+
+# needs edits to match (checking pricing first )
 def getAndStoreStockPricingData(ticker, conn):
     prices = getStockDataAllTime(ticker)
     sqlite_utils.insertPrices(conn, ticker, prices)
 
 def getAndStoreMultipleStocksPricingData(stocks, conn):
     for stock in stocks:
-        prices = getStockDataAllTime(stock)
+        # checks if price data exists for a stock entry
+        last_stock_price_entry_date = sqlite_utils.check_if_stored_price_data_for_input_symbol(conn, stock)
+
+        if last_stock_price_entry_date == "None":
+            prices = getStockDataAllTime(stock)
+
+        elif last_stock_price_entry_date is None:
+            prices = getStockDataAllTime(stock)
+            
+        else:
+            # increment date so that we don't duplicate entries
+            incremented_date = helper_functions.incrementDate(last_stock_price_entry_date)
+            prices = get_stock_data_from_date(stock, incremented_date)
+
         sqlite_utils.insertPrices(conn, stock, prices)
 
 def _getPriceDataForTicker(ticker, conn):
