@@ -21,30 +21,34 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.naive_bayes import MultinomialNB
 
-# List of files (with path) containing training data
-TRAINING_CORPORA = []
-TRAINING_LABELS = []
+# TODO: there are better design patterns than using globals. Globals are 
+COUNT_VECTORIZER = None
+TFIDF = None
+CLASSIFIER = None
 CLASSIFIER_TYPE = MultinomialNB
-#CLASSIFIER = Train()
-#CLASSIFIER_CLASSES = CLASSIFIER.classes_
 
 
 def TransformData(text):
     """Converts a list of articles into features vectors."""
-    # Option #1: word count
-    features = CountVectorizer(analyzer = 'word', lowercase = False
-            ).fit_transform(text)
-    # Option #2: Normalize counts by converting to frequencies
-    text_tfidf = TfidfTransformer(use_idf=False).fit_transform(text_word_count)
-    features_nd = features.toarray() # for easy usage
+    global COUNT_VECTORIZER
+    if COUNT_VECTORIZER is None:
+        COUNT_VECTORIZER = CountVectorizer(analyzer = 'word', lowercase = True)
+        COUNT_VECTORIZER.fit(text)
+    features = COUNT_VECTORIZER.transform(text)
+    features_nd = features.toarray()    # for easy usage
+    global TFIDF
+    if TFIDF is None:
+        TFIDF = TfidfTransformer(use_idf=False)
+        TFIDF.fit(features_nd)
+    text_tfidf = TFIDF.transform(features_nd)
     return text_tfidf
 
 
-def Fit(article):
+def Fit(text):
     """Takes an article object and classifies it."""
     # TODO: check that article.text is correct
-    article_vector = TransformData(article.text)
-    predicted_probs = CLASSIFIER.predict_proba(article_vector)
+    article_tfidf = TransformData([text])
+    predicted_probs = CLASSIFIER_TYPE().predict_proba(article_tfidf)
     # the output shoud be an array with two elements, one corresponding to
     # probability it's a positive sentiment and the other corresponding to
     # probability it's a negative sentiment. The order matches the order of
@@ -85,12 +89,21 @@ def ReadTrainingData():
 def Train():
     """Trains classifier."""
     positive_data, negative_data = ReadTrainingData()
-    training_data = positive_data
-    training_data.extend(negative_data)
+    print('Positive data len %s', len(positive_data))
+    print('Negative data len %s', len(negative_data))
     training_labels = [1 for i in positive_data]
     training_labels.extend([-1 for i in negative_data])
+    print('Labels len %s', len(training_labels))
+    training_data = []
+    training_data.extend(positive_data)
+    training_data.extend(negative_data)
+    print('Training data len %s', len(training_data))
     training_tfidf = TransformData(training_data)
-    return CLASSIFIER_TYPE.fit(training_data, TRAINING_LABELS)
+    global CLASSIFIER
+    CLASSIFIER = CLASSIFIER_TYPE()
+    CLASSIFIER.fit(training_tfidf, training_labels)
 
 
 Train()
+Fit('some article with good news')
+
