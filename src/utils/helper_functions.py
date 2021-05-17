@@ -50,6 +50,18 @@ def getTodaysDate():
     reformatedDate= str(date.year) + "-" + str(date.month) + "-" + str(date.day)
     return reformatedDate
 
+def getTodaysDateWithHour():
+    """
+    This function gets todays date with hour
+
+    Returns:
+        reformatedDate in the form: "YYYY-MM-DD HH"
+    """
+    date= datetime.today()
+    reformatedDate= ( str(date.year) + "-" + str(date.month) + "-" +
+                      str(date.day) + " " + str(date.hour) )
+    return reformatedDate
+
 def incrementDate(dateInput):
         '''
         This function takes a date string in the format (YYYY-MM-DD), converts
@@ -200,3 +212,25 @@ def getStockTickersFromUser():
                 stockArray.append(stock)
 
     return stockArray
+
+def adaptTradeVolume(tradeVolume):
+    """ This function takes the trade volume string from
+    our scraper and turns it into an int, formatting correctly
+    for our database, removing commas and multiplying out
+    data with an 'M' designated for million
+    """
+
+    formatted_trade_volume = tradeVolume
+
+    # removing any commas
+    formatted_trade_volume = formatted_trade_volume.replace(',','')
+
+    # multiplying out if the string designated has an M
+    if formatted_trade_volume[-1] == 'M':
+        formatted_trade_volume = float(formatted_trade_volume[:-1])
+        # multiply decimal by 1 million for conversion
+        formatted_trade_volume = formatted_trade_volume * 1000000
+
+    # converting to an int
+    formatted_trade_volume = int(formatted_trade_volume)
+    return formatted_trade_volume

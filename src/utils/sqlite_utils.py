@@ -2,6 +2,7 @@ import re
 import sqlite3
 from sqlite3 import Error
 import pandas
+from utils import helper_functions
 
 
 #database connection
@@ -15,6 +16,16 @@ def setUpPricingDatabase():
     _createStockPricingTable(connection_pricing_database)
     return connection_pricing_database
 
+def setUpGainersDatabase():
+    connection_gainers_database = createConnection(r"/var/stockSA/stockGainers.db")
+    _createGainersTable(connection_gainers_database)
+    return connection_gainers_database
+
+def setUpLosersDatabase():
+    connection_losers_database = createConnection(r"/var/stockSA/stockLosers.db")
+    _createLosersTable(connection_losers_database)
+    return connection_losers_database
+
 def createConnection(db_file):
     """ create a database connection to a SQLite database """
     conn = None
@@ -24,7 +35,6 @@ def createConnection(db_file):
         print(e)
 
     return conn
-
 
 def _createStockArticleTable(conn):
 
@@ -51,6 +61,97 @@ def _createStockPricingTable(conn):
     except Error as e:
          print(e)
 
+def _createGainersTable(conn):
+
+    sql = '''CREATE TABLE IF NOT EXISTS stockGainers(date text, stockSymbol text,
+             changePercentage float, tradeVolume int, avg3MonthVolume int,
+             PRIMARY KEY (stockSymbol, date))'''
+
+    try:
+        cur = conn.cursor()
+        cur.execute(sql)
+    except Error as e:
+         print(e)
+
+def _createLosersTable(conn):
+
+    sql = '''CREATE TABLE IF NOT EXISTS stockLosers(stockSymbol text,
+             changePercentage float, tradeVolume text, avg3MonthVolume int,
+             date text, PRIMARY KEY (stockSymbol, date))'''
+
+    try:
+        cur = conn.cursor()
+        cur.execute(sql)
+    except Error as e:
+         print(e)
+
+def _insertGainer(conn, date, stockSymbol, gainers):
+
+    sql = 'INSERT INTO stockGainers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume) VALUES(?, ?, ?, ?, ?)'
+
+    try:
+        cur = conn.cursor()
+
+        # string formatting for percentage, dropping % and coverting to an int
+        percentage = gainers[stockSymbol][0]
+        percentage = float(percentage.replace('%', ''))
+
+        # string formatting for day's trade volume & 3 month trade volume
+        dayTradeVolume = helper_functions.adaptTradeVolume(gainers[stockSymbol][1])
+        avg3MonthVolume = helper_functions.adaptTradeVolume(gainers[stockSymbol][2])
+
+
+        cur.execute(sql, (date, stockSymbol, percentage, dayTradeVolume, avg3MonthVolume))
+        conn.commit()
+        return cur.lastrowid
+    except Error as e:
+         print("Failed to insert gainer", e, stockSymbol)
+
+def _insertGainers(conn, gainers):
+
+    sql = 'INSERT INTO stockGainers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume) VALUES(?, ?, ?, ?, ?)'
+
+    date = helper_functions.getTodaysDateWithHour()
+
+    try:
+        for stockSymbol in gainers:
+            _insertGainer(conn, date, stockSymbol, gainers)
+    except Error as e:
+        print(e)
+
+def _insertLoser(conn, date, stockSymbol, losers):
+
+    sql = 'INSERT INTO stockLosers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume) VALUES(?, ?, ?, ?, ?)'
+
+    try:
+        cur = conn.cursor()
+
+        # string formatting for percentage, dropping % and coverting to an int
+        percentage = losers[stockSymbol][0]
+        percentage = float(percentage.replace('%', ''))
+
+        # string formatting for day's trade volume & 3 month trade volume
+        dayTradeVolume = helper_functions.adaptTradeVolume(losers[stockSymbol][1])
+        avg3MonthVolume = helper_functions.adaptTradeVolume(losers[stockSymbol][2])
+
+
+        cur.execute(sql, (date, stockSymbol, percentage, dayTradeVolume, avg3MonthVolume))
+        conn.commit()
+        return cur.lastrowid
+    except Error as e:
+         print("Failed to insert loser", e, stockSymbol)
+
+def _insertLosers(conn, losers):
+
+    sql = 'INSERT INTO stockLosers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume) VALUES(?, ?, ?, ?, ?)'
+
+    date = helper_functions.getTodaysDateWithHour()
+
+    try:
+        for stockSymbol in losers:
+            _insertLoser(conn, date, stockSymbol, losers)
+    except Error as e:
+        print(e)
 
 def _insertStockArticle(conn, article):
 

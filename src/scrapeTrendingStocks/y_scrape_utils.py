@@ -1,6 +1,7 @@
 import re
 import requests
 from bs4 import BeautifulSoup
+from utils import sqlite_utils
 
 
 def get_ticker(tableRowString):
@@ -311,3 +312,13 @@ def getTop25MostTradedStock():
         mostActiveStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume
 
     return mostActiveStocks
+
+def getAndStoreTop25GainingStocks(conn):
+    gainers = getTop25GainingStock()
+
+    sqlite_utils._insertGainers(conn, gainers)
+
+def getAndStoreTop25LosingStocks(conn):
+    losers = getTop25LosingStock()
+
+    sqlite_utils._insertLosers(conn, losers)
