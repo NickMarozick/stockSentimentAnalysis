@@ -330,3 +330,48 @@ def fetchStockDataOverview(connPricing, connArticle, STOCKS):
     for k,v in data.items():
         pricingRowCount, pricingMinDate, pricingMaxDate, articleRowCount, articleMinDate, articleMaxDate = v
         print ("{:<8} {:<15} {:<18} {:<18} {:<15} {:<18} {:<18}".format(str(k), str(pricingRowCount), str(pricingMinDate), str(pricingMaxDate), str(articleRowCount), str(articleMinDate), str(articleMaxDate)))
+
+def findMultipleStockGainers(conn):
+    sqlGainerCount = 'SELECT stockSymbol, COUNT(*) FROM stockGainers GROUP BY stockSymbol HAVING COUNT(*) > 1 ORDER BY COUNT(*) DESC'
+
+    try:
+        gainerCursor = conn.cursor()
+
+        gainerCursor.execute(sqlGainerCount)
+
+        multiGainers = gainerCursor.fetchall()
+
+        return multiGainers
+
+    except Error as e:
+        print(e)
+
+def findMultipleStockLosers(conn):
+    sqlLoserCount = 'SELECT stockSymbol, COUNT(*) FROM stockLosers GROUP BY stockSymbol HAVING COUNT(*) > 1 ORDER BY COUNT(*) DESC'
+
+    try:
+        loserCursor = conn.cursor()
+
+        loserCursor.execute(sqlLoserCount)
+
+        multiLosers = loserCursor.fetchall()
+
+        return multiLosers
+
+    except Error as e:
+        print(e)
+
+def findChangePercentageGreaterThan20():
+    sqlBigGainers = 'SELECT stockSymbol, changePercentage FROM stockGainers WHERE changePercentage > 20 ORDER BY changePercentage DESC'
+
+    try:
+        gainerCursor = conn.cursor()
+
+        gainerCursor.execute(sqlBigGainers)
+
+        bigGainers = gainerCursor.fetchall()
+
+        return bigGainers
+
+    except Error as e:
+        print(e)
