@@ -29,6 +29,20 @@ CLASSIFIER = None
 CLASSIFIER_TYPE = MultinomialNB
 
 
+'today is sunny'
+
+# the - removed
+
+'today', 'is', 'sunny'
+1, 1, 1
+
+'today', 'is', 'sunny', 'happy', 'bad'
+5, 7, 100, 89, 2
+1, 10, 85, 64, 0
+
+0.25, 0.35, 0.88, 1.00, 
+
+
 def TransformData(text):
     """Converts a list of articles into features vectors."""
     global COUNT_VECTORIZER
@@ -73,6 +87,8 @@ def ReadTrainingDataFile(data_file):
 
 def ReadTrainingData():
     """Read data from http://www.cs.jhu.edu/~mdredze/datasets/sentiment/"""
+    # TODO(bogdancopos): change path to be more generic like
+    # /tmp/sentiment_training_data
     data_directory = '/Users/bcopos/Downloads/sorted_data'
     negative_data = []
     positive_data = []
@@ -100,6 +116,6 @@ def Train():
     CLASSIFIER.fit(training_tfidf, training_labels)
 
 
-#Train()
-#Fit('some article with good news')
+Train()
+Fit('some article with good news')
 
