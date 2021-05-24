@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+  <title>Stock Movers Dashboard</title>
+
+</head>
+<body>
+
+  <header>
+    <!-- site-wide header -->
+    <h1> Stock Movers Dashboard </h1>
+  </header>
+
+  <main>
+    <!-- this page’s main content -->
+    <div>
+        {{graph1}}
+    </div>
+</html>
