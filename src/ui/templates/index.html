@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
   <title>Stock Movers Dashboard</title>
+  <!-- Import Plotly (does not have to be from CDN) -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 </head>
 <body>
@@ -18,4 +20,14 @@
     <div>
         {{graph1}}
     </div>
+
+    <div>
+        {{gain}}
+    </div>
+
+    <div id="plotly-timeseries"></div>
+    <script>
+      var graph = {{ plot_json | safe }};
+      Plotly.plot('plotly-timeseries', graph, {});
+    </script>
 </html>
