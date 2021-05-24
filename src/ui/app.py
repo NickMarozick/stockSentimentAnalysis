@@ -24,8 +24,10 @@ def index():
     gainDf=pd.DataFrame(gainData, columns=['Stock_Ticker', 'Change_Percentage', 'Trade_Volume', 'Avg_3_Month_Volume'])
     #gain.write(gainDf)
 
-    fig = px.bar(gainDf, y='Change_Percentage', x='Stock_Ticker', text='Change_Percentage', title='Stock Gainers')
+    print(gainDf)
 
+    fig = px.bar(gainDf, y='Change_Percentage', x='Stock_Ticker', title='Stock Gainers')
+    #fig.update_yaxes(categoryorder='category ascending')
     plot_json = json.dumps(fig, cls = plotly.utils.PlotlyJSONEncoder)
 
     return render_template("index.html", graph1 = multiStockGainers, gain = gainDf, plot_json = plot_json)

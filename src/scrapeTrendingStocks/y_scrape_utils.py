@@ -120,6 +120,8 @@ def getTop25GainingStockForPandasChart():
         ticker = get_ticker(str(k))
         tradeVolume = get_trade_volume(str(k))
         changePercentage = get_change_percentage(str(k))
+        changePercentage = changePercentage[1:-1]
+        changePercentage = float(changePercentage)
         avg3MonthVolume = get_avg_3_month_volume(str(k))
         #gainingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume
         gainingStocks['Stock_Ticker'].append(ticker)
