@@ -17,20 +17,28 @@ app = Flask(__name__)
 def index():
     gainerConn = sqlite_utils.createConnection("/var/stockSA/stockGainers.db")
 
-    multiStockGainers = sqlite_utils.findMultipleStockGainers(gainerConn)
-    #print(multiStockGainers)
+    #multiStockGainers = sqlite_utils.findMultipleStockGainers(gainerConn)
+    query = 'SELECT stockSymbol, COUNT(*) FROM stockGainers GROUP BY stockSymbol HAVING COUNT(*) > 1 ORDER BY COUNT(*) DESC';
+    multiStockGainers = pd.read_sql(query, gainerConn)
+
+    # multiGainers graph
+
+    fig2 = px.bar(multiStockGainers, y='COUNT(*)', x='stockSymbol', title='Multi Gainers', labels = {'stockSymbol': 'Stock Ticker', 'COUNT(*)': 'Total Count'})
+    plot_json2 = json.dumps(fig2, cls = plotly.utils.PlotlyJSONEncoder)
+
+
+    # gainScrape Data
 
     gainData = y_scrape_utils.getTop25GainingStockForPandasChart()
     gainDf=pd.DataFrame(gainData, columns=['Stock_Ticker', 'Change_Percentage', 'Trade_Volume', 'Avg_3_Month_Volume'])
-    #gain.write(gainDf)
 
-    print(gainDf)
 
-    fig = px.bar(gainDf, y='Change_Percentage', x='Stock_Ticker', title='Stock Gainers')
-    #fig.update_yaxes(categoryorder='category ascending')
+    #print(gainDf)
+
+    fig = px.bar(gainDf, y='Change_Percentage', x='Stock_Ticker', title='Stock Gainers', labels = {'Stock_Ticker': 'Stock Ticker', 'Change_Percentage': 'Change Percentage'})
     plot_json = json.dumps(fig, cls = plotly.utils.PlotlyJSONEncoder)
 
-    return render_template("index.html", graph1 = multiStockGainers, gain = gainDf, plot_json = plot_json)
+    return render_template("index.html", graph1 = multiStockGainers, gain = gainDf, plot_json = plot_json, plot_json2 = plot_json2)
 
 
 if __name__ == "__main__":

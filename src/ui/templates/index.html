@@ -17,17 +17,27 @@
 
   <main>
     <!-- this page’s main content -->
-    <div>
-        {{graph1}}
-    </div>
 
     <div>
         {{gain}}
     </div>
 
+    <h3> Top 25 Gainers </h3>
+
     <div id="plotly-timeseries"></div>
-    <script>
-      var graph = {{ plot_json | safe }};
-      Plotly.plot('plotly-timeseries', graph, {});
-    </script>
+      <script>
+        var graph = {{ plot_json | safe }};
+        Plotly.plot('plotly-timeseries', graph, {});
+      </script>
+    </div>
+
+    <h3> Multiple Top 25 Increments </h3>
+    <div id = 'plotly-timeseries2'>
+      <script>
+        var graph2 = {{ plot_json2 | safe}};
+        Plotly.plot('plotly-timeseries2', graph2, {});
+      </script>
+    </div>
+
+
 </html>
