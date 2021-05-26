@@ -13,9 +13,12 @@ from scrapeTrendingStocks import y_scrape_utils
 
 app = Flask(__name__)
 
+
+
 @app.route('/')
 def index():
     gainerConn = sqlite_utils.createConnection("/var/stockSA/stockGainers.db")
+
 
     #multiStockGainers = sqlite_utils.findMultipleStockGainers(gainerConn)
     query = 'SELECT stockSymbol, COUNT(*) FROM stockGainers GROUP BY stockSymbol HAVING COUNT(*) > 1 ORDER BY COUNT(*) DESC';
@@ -32,13 +35,16 @@ def index():
     gainData = y_scrape_utils.getTop25GainingStockForPandasChart()
     gainDf=pd.DataFrame(gainData, columns=['Stock_Ticker', 'Change_Percentage', 'Trade_Volume', 'Avg_3_Month_Volume'])
 
-
     #print(gainDf)
 
     fig = px.bar(gainDf, y='Change_Percentage', x='Stock_Ticker', title='Stock Gainers', labels = {'Stock_Ticker': 'Stock Ticker', 'Change_Percentage': 'Change Percentage'})
     plot_json = json.dumps(fig, cls = plotly.utils.PlotlyJSONEncoder)
 
-    return render_template("index.html", graph1 = multiStockGainers, gain = gainDf, plot_json = plot_json, plot_json2 = plot_json2)
+    #drop down for gainers
+
+    gainer_name = gainData['Stock_Ticker']
+    print(gainer_name)
+    return render_template("index.html", gain = gainDf, plot_json = plot_json, plot_json2 = plot_json2, gainer_name = gainer_name)
 
 
 if __name__ == "__main__":
