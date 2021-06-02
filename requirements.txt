@@ -110,7 +110,7 @@ tqdm==4.59.0
 traitlets==5.0.5
 typer==0.3.2
 typing-extensions==3.7.4.3
-urllib3==1.25.7
+urllib3==1.26.5
 virtualenv==16.7.7
 virtualenv-clone==0.5.3
 virtualenvwrapper==4.8.4
