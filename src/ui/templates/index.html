@@ -42,7 +42,7 @@
     <h4> Select Gainers to add for analysis </h4>
 
     <div align="center">
-      <form method = "POST" action='/'>
+      <form method = "POST" id="addGainers">
         <select multiple name="gainer">
           {% for g in gainer_name %}
            <OPTION value={{g}}>{{g}}</option>
@@ -51,6 +51,31 @@
         <button type = "submit" class = "btn btn-default"> SELECT </button>
       </form>
     </div>
+
+                <!--Jquery Cdn -->
+            <script src="https://code.jquery.com/jquery-3.5.1.js"
+              integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+              crossorigin="anonymous"></script>
+
+            <script type="text/javascript">
+            $(document).on('submit','#addGainers-form',function(e)
+                       {
+            console.log('hello');
+            e.preventDefault();
+            $.ajax({
+            type:'POST',
+            url:'/',
+            data:{
+              todo:$("#addGainers").val()
+            },
+            success:function()
+            {
+              alert('saved');
+            }
+            })
+            });
+            </script>
+
 
     <span> </span>
 
