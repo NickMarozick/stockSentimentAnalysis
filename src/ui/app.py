@@ -13,10 +13,13 @@ from scrapeTrendingStocks import y_scrape_utils
 
 app = Flask(__name__)
 
+selectedStock = []
 
-
-@app.route('/')
+@app.route('/', methods = ['GET', 'POST'])
 def index():
+    errors = []
+    #selectedStock = []
+
     gainerConn = sqlite_utils.createConnection("/var/stockSA/stockGainers.db")
 
 
@@ -35,16 +38,33 @@ def index():
     gainData = y_scrape_utils.getTop25GainingStockForPandasChart()
     gainDf=pd.DataFrame(gainData, columns=['Stock_Ticker', 'Change_Percentage', 'Trade_Volume', 'Avg_3_Month_Volume'])
 
-    #print(gainDf)
+    # graph for scraped Gainers
 
     fig = px.bar(gainDf, y='Change_Percentage', x='Stock_Ticker', title='Stock Gainers', labels = {'Stock_Ticker': 'Stock Ticker', 'Change_Percentage': 'Change Percentage'})
     plot_json = json.dumps(fig, cls = plotly.utils.PlotlyJSONEncoder)
 
-    #drop down for gainers
-
+    #gainer_name fills the drop down select for gainers
     gainer_name = gainData['Stock_Ticker']
-    print(gainer_name)
-    return render_template("index.html", gain = gainDf, plot_json = plot_json, plot_json2 = plot_json2, gainer_name = gainer_name)
+
+    # POST Requests to '/'
+    if request.method == 'POST':
+        if "gainer" in request.form:
+            try:
+
+                selectedStock.extend(request.form.getlist('gainer'))
+                print(selectedStock)
+
+            except:
+                errors.append("error")
+
+
+    return render_template("index.html", plot_json = plot_json, plot_json2 = plot_json2, gainer_name = gainer_name, errors = errors, selectedStock = selectedStock)
+
+
+#def addToSelected():
+#    selectedStock.extend(request.form.getlist('gainer'))
+
+
 
 
 if __name__ == "__main__":

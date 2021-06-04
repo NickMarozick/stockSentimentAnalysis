@@ -17,22 +17,8 @@
 
   <main>
     <!-- this page’s main content -->
-    <div>
-      <form id = "gainer_select" method = "POST">
-        Select Gainers to add for analysis <select multiple name="gainer">
-          {% for g in gainer_name %}
-  	       <OPTION value={{g}}>{{g}}</option>
-             {% endfor %}
-           </select>
-        <button type = "submit" class = "btn btn-default"> SELECT </button>
-      </form>
-    </div>
 
     <span> </span>
-
-    <div>
-        {{gain}}
-    </div>
 
     <h3> Top 25 Gainers </h3>
 
@@ -50,6 +36,32 @@
         Plotly.plot('plotly-timeseries2', graph2, {});
       </script>
     </div>
+
+    <span> </span>
+
+    <h4> Select Gainers to add for analysis </h4>
+
+    <div align="center">
+      <form method = "POST" action='/'>
+        <select multiple name="gainer">
+          {% for g in gainer_name %}
+           <OPTION value={{g}}>{{g}}</option>
+             {% endfor %}
+           </select>
+        <button type = "submit" class = "btn btn-default"> SELECT </button>
+      </form>
+    </div>
+
+    <span> </span>
+
+    <h5> Selected Stock </h5>
+
+    <div align="center">
+      {% for s in selectedStock %}
+      {{s}}
+      {% endfor %}
+    </div>
+
 
 
 </html>

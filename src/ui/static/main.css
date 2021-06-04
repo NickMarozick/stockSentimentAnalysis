@@ -18,6 +18,12 @@ h3 {
 h4 {
   color: #18d26e;
   font-size: 18px;
+  text-align: center;
+}
+
+h5 {
+  color: navajowhite;
+  text-align: center;
 }
 
 .container_row textarea {
