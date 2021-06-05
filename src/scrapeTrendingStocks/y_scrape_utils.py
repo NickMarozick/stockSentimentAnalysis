@@ -61,7 +61,9 @@ def getTop100GainingStock():
         tradeVolume = get_trade_volume(str(k))
         changePercentage = get_change_percentage(str(k))
         avg3MonthVolume = get_avg_3_month_volume(str(k))
-        gainingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume
+        price = get_price(str(k))
+        price = float(price.replace(',',''))
+        gainingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume, price
 
     return gainingStocks
 
@@ -82,7 +84,9 @@ def getTop25GainingStock():
         tradeVolume = get_trade_volume(str(k))
         changePercentage = get_change_percentage(str(k))
         avg3MonthVolume = get_avg_3_month_volume(str(k))
-        gainingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume
+        price = get_price(str(k))
+        price = float(price.replace(',',''))
+        gainingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume, price
 
     return gainingStocks
 
@@ -93,7 +97,7 @@ def getTop100GainingStockForPandasChart():
     soupGain = BeautifulSoup(gainRequest.content, 'html.parser')
 
     # adding our dictionary to return
-    gainingStocks = {'Stock_Ticker': [], 'Trade_Volume': [], 'Change_Percentage': [], 'Avg_3_Month_Volume': []}
+    gainingStocks = {'Stock_Ticker': [], 'Trade_Volume': [], 'Change_Percentage': [], 'Avg_3_Month_Volume': [], 'Price' : []}
 
     # finding the specific tableRows
     gainTable = soupGain.findAll('tr', attrs = {'class':'simpTblRow'})
@@ -103,11 +107,14 @@ def getTop100GainingStockForPandasChart():
         tradeVolume = get_trade_volume(str(k))
         changePercentage = get_change_percentage(str(k))
         avg3MonthVolume = get_avg_3_month_volume(str(k))
-        #gainingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume
+        price = get_price(str(k))
+        price = float(price.replace(',',''))
+
         gainingStocks['Stock_Ticker'].append(ticker)
         gainingStocks['Trade_Volume'].append(tradeVolume)
         gainingStocks['Change_Percentage'].append(changePercentage)
         gainingStocks['Avg_3_Month_Volume'].append(avg3MonthVolume)
+        gainingStocks['Price'].append(price)
 
     return gainingStocks
 
@@ -131,6 +138,7 @@ def getTop25GainingStockForPandasChart():
         changePercentage = float(changePercentage)
         avg3MonthVolume = get_avg_3_month_volume(str(k))
         price = get_price(str(k))
+        price = float(price.replace(',',''))
 
         gainingStocks['Stock_Ticker'].append(ticker)
         gainingStocks['Trade_Volume'].append(tradeVolume)
@@ -146,7 +154,7 @@ def getTop100LosingStockForPandasChart():
     soupLoss = BeautifulSoup(lossRequest.content, 'html.parser')
 
     # adding our dictionary to return
-    losingStocks = {'Stock_Ticker': [], 'Trade_Volume': [], 'Change_Percentage': [], 'Avg_3_Month_Volume': []}
+    losingStocks = {'Stock_Ticker': [], 'Trade_Volume': [], 'Change_Percentage': [], 'Avg_3_Month_Volume': [], 'Price' : []}
 
     # finding the specific tableRows
     lossTable = soupLoss.findAll('tr', attrs = {'class':'simpTblRow'})
@@ -156,11 +164,14 @@ def getTop100LosingStockForPandasChart():
         tradeVolume = get_trade_volume(str(j))
         changePercentage = get_change_percentage(str(j))
         avg3MonthVolume = get_avg_3_month_volume(str(j))
+        price = get_price(str(j))
+        price = float(price.replace(',',''))
 
         losingStocks['Stock_Ticker'].append(ticker)
         losingStocks['Trade_Volume'].append(tradeVolume)
         losingStocks['Change_Percentage'].append(changePercentage)
         losingStocks['Avg_3_Month_Volume'].append(avg3MonthVolume)
+        losingStocks['Price'].append(price)
 
     return losingStocks
 
@@ -171,7 +182,7 @@ def getTop25LosingStockForPandasChart():
     soupLoss = BeautifulSoup(lossRequest.content, 'html.parser')
 
     # adding our dictionary to return
-    losingStocks = {'Stock_Ticker': [], 'Trade_Volume': [], 'Change_Percentage': [], 'Avg_3_Month_Volume': []}
+    losingStocks = {'Stock_Ticker': [], 'Trade_Volume': [], 'Change_Percentage': [], 'Avg_3_Month_Volume': [], 'Price': []}
 
     # finding the specific tableRows
     lossTable = soupLoss.findAll('tr', attrs = {'class':'simpTblRow'})
@@ -181,11 +192,14 @@ def getTop25LosingStockForPandasChart():
         tradeVolume = get_trade_volume(str(j))
         changePercentage = get_change_percentage(str(j))
         avg3MonthVolume = get_avg_3_month_volume(str(j))
+        price = get_price(str(j))
+        price = float(price.replace(',',''))
 
         losingStocks['Stock_Ticker'].append(ticker)
         losingStocks['Trade_Volume'].append(tradeVolume)
         losingStocks['Change_Percentage'].append(changePercentage)
         losingStocks['Avg_3_Month_Volume'].append(avg3MonthVolume)
+        losingStocks['Price'].append(price)
 
     return losingStocks
 
@@ -206,7 +220,9 @@ def getTop100LosingStock():
         tradeVolume = get_trade_volume(str(j))
         changePercentage = get_change_percentage(str(j))
         avg3MonthVolume = get_avg_3_month_volume(str(j))
-        losingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume
+        price = get_price(str(j))
+        price = float(price.replace(',',''))
+        losingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume, price
 
     return losingStocks
 
@@ -228,7 +244,9 @@ def getTop25LosingStock():
         tradeVolume = get_trade_volume(str(j))
         changePercentage = get_change_percentage(str(j))
         avg3MonthVolume = get_avg_3_month_volume(str(j))
-        losingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume
+        price = get_price(str(j))
+        price = float(price.replace(',',''))
+        losingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume, price
 
     return losingStocks
 

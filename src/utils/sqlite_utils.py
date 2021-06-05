@@ -64,7 +64,7 @@ def _createStockPricingTable(conn):
 def _createGainersTable(conn):
 
     sql = '''CREATE TABLE IF NOT EXISTS stockGainers(date text, stockSymbol text,
-             changePercentage float, tradeVolume int, avg3MonthVolume int,
+             changePercentage float, tradeVolume int, avg3MonthVolume int, price float,
              PRIMARY KEY (stockSymbol, date))'''
 
     try:
@@ -75,9 +75,9 @@ def _createGainersTable(conn):
 
 def _createLosersTable(conn):
 
-    sql = '''CREATE TABLE IF NOT EXISTS stockLosers(stockSymbol text,
-             changePercentage float, tradeVolume text, avg3MonthVolume int,
-             date text, PRIMARY KEY (stockSymbol, date))'''
+    sql = '''CREATE TABLE IF NOT EXISTS stockLosers(date text, stockSymbol text,
+             changePercentage float, tradeVolume text, avg3MonthVolume int, price float,
+             PRIMARY KEY (stockSymbol, date))'''
 
     try:
         cur = conn.cursor()
@@ -87,7 +87,7 @@ def _createLosersTable(conn):
 
 def _insertGainer(conn, date, stockSymbol, gainers):
 
-    sql = 'INSERT INTO stockGainers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume) VALUES(?, ?, ?, ?, ?)'
+    sql = 'INSERT INTO stockGainers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume, price) VALUES(?, ?, ?, ?, ?, ?)'
 
     try:
         cur = conn.cursor()
@@ -99,9 +99,10 @@ def _insertGainer(conn, date, stockSymbol, gainers):
         # string formatting for day's trade volume & 3 month trade volume
         dayTradeVolume = helper_functions.adaptTradeVolume(gainers[stockSymbol][1])
         avg3MonthVolume = helper_functions.adaptTradeVolume(gainers[stockSymbol][2])
+        price = gainers[stockSymbol][3]
 
 
-        cur.execute(sql, (date, stockSymbol, percentage, dayTradeVolume, avg3MonthVolume))
+        cur.execute(sql, (date, stockSymbol, percentage, dayTradeVolume, avg3MonthVolume, price))
         conn.commit()
         return cur.lastrowid
     except Error as e:
@@ -109,7 +110,7 @@ def _insertGainer(conn, date, stockSymbol, gainers):
 
 def _insertGainers(conn, gainers):
 
-    sql = 'INSERT INTO stockGainers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume) VALUES(?, ?, ?, ?, ?)'
+    sql = 'INSERT INTO stockGainers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume, price) VALUES(?, ?, ?, ?, ?, ?)'
 
     date = helper_functions.getTodaysDateWithHour()
 
@@ -121,7 +122,7 @@ def _insertGainers(conn, gainers):
 
 def _insertLoser(conn, date, stockSymbol, losers):
 
-    sql = 'INSERT INTO stockLosers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume) VALUES(?, ?, ?, ?, ?)'
+    sql = 'INSERT INTO stockLosers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume, price) VALUES(?, ?, ?, ?, ?, ?)'
 
     try:
         cur = conn.cursor()
@@ -133,9 +134,9 @@ def _insertLoser(conn, date, stockSymbol, losers):
         # string formatting for day's trade volume & 3 month trade volume
         dayTradeVolume = helper_functions.adaptTradeVolume(losers[stockSymbol][1])
         avg3MonthVolume = helper_functions.adaptTradeVolume(losers[stockSymbol][2])
+        price = losers[stockSymbol][3]
 
-
-        cur.execute(sql, (date, stockSymbol, percentage, dayTradeVolume, avg3MonthVolume))
+        cur.execute(sql, (date, stockSymbol, percentage, dayTradeVolume, avg3MonthVolume, price))
         conn.commit()
         return cur.lastrowid
     except Error as e:
@@ -143,7 +144,7 @@ def _insertLoser(conn, date, stockSymbol, losers):
 
 def _insertLosers(conn, losers):
 
-    sql = 'INSERT INTO stockLosers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume) VALUES(?, ?, ?, ?, ?)'
+    sql = 'INSERT INTO stockLosers(date, stockSymbol, changePercentage, tradeVolume, avg3MonthVolume, price) VALUES(?, ?, ?, ?, ?, ?)'
 
     date = helper_functions.getTodaysDateWithHour()
 

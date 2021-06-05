@@ -52,9 +52,10 @@ for k in gainTable:
     gainingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume
 
 
-print("Most Active Stocks: ", mostActiveStocks)
-print("\n")
-print("Losing Stocks: ", losingStocks)
-print("\n")
-print("Gaining Stocks: ", gainingStocks)
-print("\n")
+#print("Most Active Stocks: ", mostActiveStocks)
+#print("\n")
+#print("Losing Stocks: ", losingStocks)
+#print("\n")
+#print("Gaining Stocks: ", gainingStocks)
+#print("\n")
+print(gainTable[0])
