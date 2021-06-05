@@ -36,11 +36,11 @@ def index():
     # gainScrape Data
 
     gainData = y_scrape_utils.getTop25GainingStockForPandasChart()
-    gainDf=pd.DataFrame(gainData, columns=['Stock_Ticker', 'Change_Percentage', 'Trade_Volume', 'Avg_3_Month_Volume'])
+    gainDf=pd.DataFrame(gainData, columns=['Stock_Ticker', 'Change_Percentage', 'Trade_Volume', 'Avg_3_Month_Volume', 'Price'])
 
     # graph for scraped Gainers
 
-    fig = px.bar(gainDf, y='Change_Percentage', x='Stock_Ticker', title='Stock Gainers', labels = {'Stock_Ticker': 'Stock Ticker', 'Change_Percentage': 'Change Percentage'})
+    fig = px.bar(gainDf, y='Change_Percentage', x='Stock_Ticker', title='Stock Gainers', labels = {'Stock_Ticker': 'Stock Ticker', 'Change_Percentage': 'Change Percentage'}, text = 'Price')
     plot_json = json.dumps(fig, cls = plotly.utils.PlotlyJSONEncoder)
 
     #gainer_name fills the drop down select for gainers

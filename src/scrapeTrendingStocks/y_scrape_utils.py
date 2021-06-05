@@ -37,6 +37,13 @@ def get_avg_3_month_volume(tableRowString):
 
     return avg3MonthVolume
 
+def get_price(tableRowString):
+    price = (re.search('Price \(Intraday\)[\s\S]*?(?=<\/)', tableRowString)).group()
+    price = (re.search('>[0-9][,.0-9]*', price)).group()
+    price = price[1:]
+
+    return price
+
 def getTop100GainingStock():
     #setting up the beautifulSoup
     gainURL = 'https://finance.yahoo.com/gainers?offset=0&count=100'
@@ -111,7 +118,7 @@ def getTop25GainingStockForPandasChart():
     soupGain = BeautifulSoup(gainRequest.content, 'html.parser')
 
     # adding our dictionary to return
-    gainingStocks = {'Stock_Ticker': [], 'Trade_Volume': [], 'Change_Percentage': [], 'Avg_3_Month_Volume': []}
+    gainingStocks = {'Stock_Ticker': [], 'Trade_Volume': [], 'Change_Percentage': [], 'Avg_3_Month_Volume': [], 'Price': []}
 
     # finding the specific tableRows
     gainTable = soupGain.findAll('tr', attrs = {'class':'simpTblRow'})
@@ -123,11 +130,13 @@ def getTop25GainingStockForPandasChart():
         changePercentage = changePercentage[1:-1]
         changePercentage = float(changePercentage)
         avg3MonthVolume = get_avg_3_month_volume(str(k))
-        #gainingStocks[ticker] = changePercentage, tradeVolume, avg3MonthVolume
+        price = get_price(str(k))
+
         gainingStocks['Stock_Ticker'].append(ticker)
         gainingStocks['Trade_Volume'].append(tradeVolume)
         gainingStocks['Change_Percentage'].append(changePercentage)
         gainingStocks['Avg_3_Month_Volume'].append(avg3MonthVolume)
+        gainingStocks['Price'].append(price)
     return gainingStocks
 
 def getTop100LosingStockForPandasChart():
