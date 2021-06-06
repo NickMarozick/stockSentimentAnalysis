@@ -127,5 +127,39 @@
     </div>
 
 
+    <script type="text/javascript">
+    $(document).on('delete','#deleteStock-form',function(e)
+               {
+    console.log('delete stock requested');
+    e.preventDefault();
+    $.ajax({
+    type:'POST',
+    url:'/',
+    data:{
+      todo:$("#stockRemove").val()
+    },
+    success:function()
+    {
+      alert('saved');
+    }
+    })
+    });
+    </script>
+
+    <h5> Remove Tickers From Query List </h5>
+
+    <div align="center">
+      <form method = "POST" id="deleteStock">
+        <select multiple name="stockRemove" method="POST" action="/">
+        {% if selectedStock %}
+        {% for stock in selectedStock %}
+            <option value="{{stock}}" SELECTED>{{stock}}</option>"
+        {% endfor %}
+        {% endif %}
+        </select>
+        <button type = "delete" class = "btn btn-default"> DELETE </button>
+      </form>
+    </div>
+
 
 </html>

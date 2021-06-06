@@ -56,13 +56,22 @@ def index():
                 print(selectedStock)
 
             except:
-                errors.append("error")
+                errors.append("add selected stock error")
         elif "graphType" in request.form:
             try:
                 graphSelect = request.form.get('graphType')
                 print(graphSelect)
             except:
-                errors.append("error")
+                errors.append("graph select error")
+        elif "stockRemove" in request.form:
+            try:
+                removeStockList = request.form.getlist('stockRemove')
+                for stock in removeStockList:
+                    if stock in selectedStock:
+                        selectedStock.remove(stock)
+                print(selectedStock)
+            except:
+                errors.append("delete stock error")
 
 
     return render_template("index.html", plot_json = plot_json, plot_json2 = plot_json2, gainer_name = gainer_name, errors = errors, selectedStock = selectedStock, graphSelect = graphSelect)
