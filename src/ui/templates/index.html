@@ -60,7 +60,7 @@
             <script type="text/javascript">
             $(document).on('submit','#addGainers-form',function(e)
                        {
-            console.log('hello');
+            console.log('add gainers sumbit');
             e.preventDefault();
             $.ajax({
             type:'POST',
@@ -82,9 +82,48 @@
     <h5> Selected Stock </h5>
 
     <div align="center">
-      {% for s in selectedStock %}
-      {{s}}
-      {% endfor %}
+      {% if selectedStock %}
+          {% for s in selectedStock %}
+            <h5> {{s}} </h5>
+          {% endfor %}
+      {% endif %}
+    </div>
+
+
+    <script type="text/javascript">
+    $(document).on('submitGraph','#graphSelect-form',function(e)
+               {
+    console.log('graph select submitted');
+    e.preventDefault();
+    $.ajax({
+    type:'POST',
+    url:'/',
+    data:{
+      todo:$("#graphSelect").val()
+    },
+    success:function()
+    {
+      alert('saved');
+    }
+    })
+    });
+    </script>
+
+    <div align="center">
+      <form method = "POST" id="graphSelect">
+        <select name="graphType">
+          <option value="graph1">Graph Type 1</option>
+          <option value="graph2">Graph Type 2</option>
+          <option value="graph3">Graph Type 3</option>
+        </select>
+        <button type = "submitGraph" class = "btn btn-default"> SUBMIT </button>
+      </form>
+    </div>
+
+    <div align="center">
+      {% if graphSelect %}
+        <h5> {{graphSelect}} </h5>
+      {% endif %}
     </div>
 
 

@@ -18,6 +18,7 @@ selectedStock = []
 @app.route('/', methods = ['GET', 'POST'])
 def index():
     errors = []
+    graphSelect = None
     #selectedStock = []
 
     gainerConn = sqlite_utils.createConnection("/var/stockSA/stockGainers.db")
@@ -56,9 +57,15 @@ def index():
 
             except:
                 errors.append("error")
+        elif "graphType" in request.form:
+            try:
+                graphSelect = request.form.get('graphType')
+                print(graphSelect)
+            except:
+                errors.append("error")
 
 
-    return render_template("index.html", plot_json = plot_json, plot_json2 = plot_json2, gainer_name = gainer_name, errors = errors, selectedStock = selectedStock)
+    return render_template("index.html", plot_json = plot_json, plot_json2 = plot_json2, gainer_name = gainer_name, errors = errors, selectedStock = selectedStock, graphSelect = graphSelect)
 
 
 #def addToSelected():
