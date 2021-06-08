@@ -2,6 +2,7 @@ import sys
 from datetime import datetime, timedelta
 import recordtype
 import re
+import requests
 
 
 FIELDS = ['stockSymbol', 'name', 'url', 'content', 'description', 'scraper', 'date']
@@ -234,3 +235,22 @@ def adaptTradeVolume(tradeVolume):
     # converting to an int
     formatted_trade_volume = int(formatted_trade_volume)
     return formatted_trade_volume
+
+def isValidStockSymbol(input: str):
+    """
+    This function takes in a string representing a user input stock
+    symbol. The input is appended to the market watch url. If the url returns a
+    200 code, then market watch has the stockSymbol registered and the input is
+    valid
+    Input: String
+    Output: 0 if the string is not a valid stock symbol, 1 if it is valid
+    """
+    url = 'https://www.marketwatch.com/investing/stock/' + input
+    request = requests.get(url)
+
+    if request.url == url:
+        print('Valid Stock Symbol, %s' % input)
+        return 1
+    else:
+        print('%s is not a stockSymbol' % input)
+        return 0

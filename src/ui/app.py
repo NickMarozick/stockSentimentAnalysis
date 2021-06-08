@@ -4,10 +4,12 @@ import pandas as pd
 import plotly
 import plotly.express as px
 import sys
+import re
+import requests
 sys.path.append('..')
 from utils import sqlite_utils
+from utils import helper_functions
 from scrapeTrendingStocks import y_scrape_utils
-
 
 
 
@@ -72,6 +74,17 @@ def index():
                 print(selectedStock)
             except:
                 errors.append("delete stock error")
+        elif "freeTextAdd" in request.form:
+            try:
+                addStock = request.form.get('freeTextAdd')
+                print(addStock)
+                addStock = re.split(" |, |,", addStock)
+                print(addStock)
+                for stock in addStock:
+                    if helper_functions.isValidStockSymbol(stock) == 1:
+                        selectedStock.append(stock)
+            except:
+                errors.append("add stock free input error")
 
 
     return render_template("index.html", plot_json = plot_json, plot_json2 = plot_json2, gainer_name = gainer_name, errors = errors, selectedStock = selectedStock, graphSelect = graphSelect)
