@@ -50,9 +50,14 @@ button:active {
 }
 
 .container {
-  display: inline-block;
+  display: flex
   justify-content: center;
   position: relative;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 40px;
 }
 
 .container_row {

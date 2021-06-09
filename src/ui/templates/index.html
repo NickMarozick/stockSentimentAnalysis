@@ -20,22 +20,28 @@
 
     <span> </span>
 
-    <h3> Top 25 Gainers </h3>
 
-    <div id="plotly-timeseries"></div>
-      <script>
-        var graph = {{ plot_json | safe }};
-        Plotly.plot('plotly-timeseries', graph, {});
-      </script>
-    </div>
 
-    <h3> Multiple Top 25 Increments </h3>
-    <div id = 'plotly-timeseries2'>
-      <script>
-        var graph2 = {{ plot_json2 | safe}};
-        Plotly.plot('plotly-timeseries2', graph2, {});
-      </script>
-    </div>
+    <div class = "grid-container">
+
+        <div class = "grid-child one" id="plotly-timeseries">
+          <!-- <h3> Top 25 Gainers </h3> -->
+          <script>
+            var graph = {{ plot_json | safe }};
+            Plotly.plot('plotly-timeseries', graph, {});
+          </script>
+        </div>
+
+
+        <div class = "grid-child two" id = 'plotly-timeseries2'>
+          <!-- <h3> Multiple Top 25 Increments </h3> -->
+          <script>
+            var graph2 = {{ plot_json2 | safe}};
+            Plotly.plot('plotly-timeseries2', graph2, {});
+          </script>
+        </div>
+
+      </div>
 
     <span> </span>
 
