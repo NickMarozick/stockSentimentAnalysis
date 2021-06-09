@@ -45,18 +45,7 @@
 
     <span> </span>
 
-    <h4> Select Gainers to add for analysis </h4>
 
-    <div align="center">
-      <form method = "POST" id="addGainers">
-        <select multiple name="gainer">
-          {% for g in gainer_name %}
-           <OPTION value={{g}}>{{g}}</option>
-             {% endfor %}
-           </select>
-        <button type = "submit" class = "btn btn-default"> SELECT </button>
-      </form>
-    </div>
 
                 <!--Jquery Cdn -->
             <script src="https://code.jquery.com/jquery-3.5.1.js"
@@ -85,14 +74,50 @@
 
     <span> </span>
 
-    <h5> Selected Stock </h5>
+    <div class="grid-container2">
+          <div class="grid child 1">
+            <h4> Select Gainers to add for analysis </h4>
+            <form method = "POST" id="addGainers" align="center">
+              <select multiple name="gainer">
+                {% for g in gainer_name %}
+                 <OPTION value={{g}}>{{g}}</option>
+                   {% endfor %}
+                 </select>
+              <button type = "submit" class = "btn btn-default"> SELECT </button>
+            </form>
+          </div>
 
-    <div align="center">
-      {% if selectedStock %}
-          {% for s in selectedStock %}
-            <h5> {{s}} </h5>
-          {% endfor %}
-      {% endif %}
+          <div class="grid child 2">
+            <h4> Add Stock Symbol Free Input </h4>
+            <form method = "POST" id="userAddInput">
+              <input name = "freeTextAdd">
+              <button type = "add" class = "btn btn-default"> SUBMIT </button>
+            </form>
+          </div>
+
+          <div class="grid child 3">
+            <h4> Remove Tickers From Query List </h4>
+            <form method = "POST" id="deleteStock">
+              <select multiple name="stockRemove" method="POST" action="/">
+              {% if selectedStock %}
+              {% for stock in selectedStock %}
+                  <option value="{{stock}}" SELECTED>{{stock}}</option>"
+              {% endfor %}
+              {% endif %}
+              </select>
+              <button type = "delete" class = "btn btn-default"> DELETE </button>
+            </form>
+          </div>
+
+          <div class="grid child 4">
+            <h4> Selected Stock </h4>
+              {% if selectedStock %}
+                  {% for s in selectedStock %}
+                    <h5> {{s}} </h5>
+                  {% endfor %}
+              {% endif %}
+          </div>
+
     </div>
 
 
@@ -152,27 +177,7 @@
     });
     </script>
 
-    <h5> Remove Tickers From Query List </h5>
 
-    <div align="center">
-      <form method = "POST" id="deleteStock">
-        <select multiple name="stockRemove" method="POST" action="/">
-        {% if selectedStock %}
-        {% for stock in selectedStock %}
-            <option value="{{stock}}" SELECTED>{{stock}}</option>"
-        {% endfor %}
-        {% endif %}
-        </select>
-        <button type = "delete" class = "btn btn-default"> DELETE </button>
-      </form>
-    </div>
-
-    <div align = "center">
-      <form method = "POST" id="userAddInput">
-        <input name = "freeTextAdd">
-        <button type = "add" class = "btn btn-default"> SUBMIT </button>
-      </form>
-    <div>
 
       <script type="text/javascript">
       $(document).on('submit','#userAddInput-form',function(e)
