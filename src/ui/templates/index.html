@@ -167,5 +167,31 @@
       </form>
     </div>
 
+    <div align = "center">
+      <form method = "POST" id="userAddInput">
+        <input name = "freeTextAdd">
+        <button type = "add" class = "btn btn-default"> SUBMIT </button>
+      </form>
+    <div>
+
+      <script type="text/javascript">
+      $(document).on('submit','#userAddInput-form',function(e)
+                 {
+      console.log('user inputted add gainers');
+      e.preventDefault();
+      $.ajax({
+      type:'POST',
+      url:'/',
+      data:{
+        todo:$("#freeTextAdd").val()
+      },
+      success:function()
+      {
+        alert('saved');
+      }
+      })
+      });
+      </script>
+
 
 </html>
