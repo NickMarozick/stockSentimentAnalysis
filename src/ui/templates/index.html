@@ -75,15 +75,18 @@
     <span> </span>
 
     <div class="grid-container2">
-          <div class="grid child 1">
+
+          <div class="grid-child-1">
             <h4> Select Gainers to add for analysis </h4>
-            <form method = "POST" id="addGainers" align="center">
+            <form method = "POST" id="addGainers">
               <select multiple name="gainer">
                 {% for g in gainer_name %}
                  <OPTION value={{g}}>{{g}}</option>
                    {% endfor %}
                  </select>
-              <button type = "submit" class = "btn btn-default"> SELECT </button>
+                 <div style="margin-top: .5em">
+                   <button type = "submit" class = "btn btn-default"> SELECT </button>
+                 </div>
             </form>
           </div>
 
@@ -91,7 +94,9 @@
             <h4> Add Stock Symbol Free Input </h4>
             <form method = "POST" id="userAddInput">
               <input name = "freeTextAdd">
-              <button type = "add" class = "btn btn-default"> SUBMIT </button>
+              <div style="margin-top: .5em">
+                <button type = "add" class = "btn btn-default"> SUBMIT </button>
+              </div>
             </form>
           </div>
 
@@ -105,7 +110,9 @@
               {% endfor %}
               {% endif %}
               </select>
-              <button type = "delete" class = "btn btn-default"> DELETE </button>
+              <div style="margin-top: .5em">
+                <button type = "delete" class = "btn btn-default"> DELETE </button>
+              </div>
             </form>
           </div>
 
@@ -147,7 +154,9 @@
           <option value="graph2">Graph Type 2</option>
           <option value="graph3">Graph Type 3</option>
         </select>
-        <button type = "submitGraph" class = "btn btn-default"> SUBMIT </button>
+        <div style="margin-top: .5em">
+          <button type = "submitGraph" class = "btn btn-default"> SUBMIT </button>
+        </div>
       </form>
     </div>
 
