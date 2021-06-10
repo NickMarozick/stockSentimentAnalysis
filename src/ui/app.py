@@ -82,7 +82,10 @@ def index():
                 print(addStock)
                 for stock in addStock:
                     if helper_functions.isValidStockSymbol(stock) == 1:
-                        selectedStock.append(stock)
+                        if stock.upper() in selectedStock:
+                            print("stock already present")
+                        else:
+                            selectedStock.append(stock.upper())
             except:
                 errors.append("add stock free input error")
 
