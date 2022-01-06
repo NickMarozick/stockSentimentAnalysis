@@ -1,0 +1,20 @@
+{% if latest_gainer_list %}
+    <ul>
+    {% for gainer in latest_gainer_list %}
+        <li>{{ gainer }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Gainers are available.</p>
+{% endif %}
+
+{% if results %}
+    <ul>
+    {% for stock in stock_list %}
+        <li>{{ stock }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+{{stock_list}}
+    <p>No Stock Symbols are Stored.</p>
+{% endif %}
