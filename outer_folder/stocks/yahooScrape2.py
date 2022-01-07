@@ -1,9 +1,11 @@
-import sys
-import os
 import re
 import requests
+from datetime import datetime
 from bs4 import BeautifulSoup
-from datetime import datetime 
+from datetime import datetime
+from django.conf import settings 
+from django.db import models
+from .models import StockSymbol, StockGainer
 
 
 top_25_gainers_url = 'https://finance.yahoo.com/gainers'
@@ -13,31 +15,52 @@ def get_top_25_gainers_chart():
     gainers_request = requests.get(top_25_gainers_url)
     soup_gainers= BeautifulSoup(gainers_request.content, 'html.parser')
     gainers_table = soup_gainers.findAll('tr', attrs = {'class':'simpTblRow'})
-
+    #print(StockSymbol.objects.all())
     return gainers_table
+    #return(StockSymbol.objects.all())
 
-def getStockSymbols(table):
-    tickers = []
-    for tr in table:
-        td = tr.find_all('td')
-        tickers.append(td[0].text)
+# def get-Stock-Symbols(table):
+#     tickers = []
+#     for tr in table:
+#         td = tr.find_all('td')
+#         tickers.append(td[0].text)
     
-    return tickers
+#     return tickers
 
+def get_or_save_stock_symbol_id(ticker):
+    try:
+        id = StockSymbol.objects.get(name=ticker).value('id')
+        return id
+    except:
+        try: 
+            app = StockSymbol.objects.create(name=ticker)
+            return app.id
+        except Exception as e:
+            print('save failed: ', e)
+        return 
 
 
 def parse_table(table):
     for tr in table: 
         td = tr.find_all('td')
         ticker = td[0].text
-        price = float(td[2].text.replace(',',''))
-        trade_volume = adapt_trade_volume(td[5].text)
-        change_percentage = adapt_change_percentage(td[4].text) # needs to be adapted 
-        avg_3_month_volume = adapt_trade_volume(td[6].text) # needs to be adapted
-        date = get_todays_date_with_hour()
-        print(ticker, price, trade_volume, change_percentage, avg_3_month_volume, date)
+        stock_price = float(td[2].text.replace(',',''))
+        volume = adapt_trade_volume(td[5].text)
+        change_percent = adapt_change_percentage(td[4].text) # needs to be adapted 
+        avg_volume = adapt_trade_volume(td[6].text) # needs to be adapted
+        scrape_date = datetime.now()
+        scrape_date = datetime(scrape_date.year, scrape_date.month, scrape_date.day, scrape_date.hour)
+        #print(ticker, price, trade_volume, change_percentage, avg_3_month_volume, date)
 
-        save_stock_name(ticker)
+        try: 
+            id = get_or_save_stock_symbol_id(ticker)
+            print(id)
+            StockGainer.objects.create(stock_id=id, date=scrape_date, change_percentage=change_percent, price=stock_price, trade_volume=volume, avg_3_month_volume=avg_volume)
+        except Exception as e:
+            print("Could not store Stock Gainer %s: %s" %(ticker, e)) 
+    print("Finished scraping gainers")
+    return 
+
 
         # need to adapt data
 
