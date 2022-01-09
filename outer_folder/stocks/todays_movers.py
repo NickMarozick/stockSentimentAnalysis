@@ -32,10 +32,11 @@ def get_or_save_stock_symbol_id(ticker):
             return app.id
         except Exception as e:
             print('save failed: ', e)
-        return 
+            return
+    return 
 
 def parse_and_save_table(table, table_type):
-    if table_type=="gainer":
+    if table_type=="gainers":
         for tr in table: 
             td = tr.find_all('td')
             ticker = td[0].text
@@ -77,12 +78,6 @@ def parse_and_save_table(table, table_type):
         print("Finished saving stock losers\n")
         return 
     
-def save_stock_name(ticker):
-    current_tickers = StockSymbol.objects.all()
-
-    if not StockSymbol.objects.filter(name=ticker):
-        StockSymbol.objects.create(ticker)
-    return
 
 def get_todays_date_with_hour():
     """

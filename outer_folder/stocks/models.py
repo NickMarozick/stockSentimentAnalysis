@@ -10,7 +10,7 @@ from django.db.models.constraints import UniqueConstraint
 
 
 class StockSymbol(models.Model):
-    name = models.CharField(max_length=10)
+    name = models.CharField(unique=True, max_length=10)
 
     UniqueConstraint(fields=['name'], name='unique_stock_ticker')
 
