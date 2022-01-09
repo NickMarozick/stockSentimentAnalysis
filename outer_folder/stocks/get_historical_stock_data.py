@@ -1,6 +1,6 @@
 import sys
 from yahoofinancials import YahooFinancials
-from datetime import datetime
+from datetime import date, datetime
 from django.db.models import Max
 import stocks.utils as utils
 from .models import PriceData, StockLoser, StockSymbol, StockGainer
@@ -87,21 +87,25 @@ def get_stock_most_current_price_data_date(ticker):
         Latest date for price data retrieved (if any) or default date
     """
     id = get_or_save_stock_symbol_id(ticker)
-    print("id: ", id)
 
     if id:
         try:
-            # date_dict of None creates an issue, need to address logic (change to default date)
             date_dict = PriceData.objects.filter(stock_id=id).aggregate(Max('date'))
-            revised_date = transform_date_for_yahoo_financials(date_dict['date__max'])
-            return revised_date
+
+            # handles the condition of no date existing for price data 
+            if date_dict['date__max'] == None:
+                return "1800-01-01" 
+            else:
+                revised_date = transform_date_for_yahoo_financials(date_dict['date__max'])
+                return revised_date
 
         except Exception as e:
             print("Error in getting most current price data date: %s" % e)
             return 
 
     else: 
-        print("Was unable to retrieve stock id\n")
+        # condition reached if invalid stock name
+        print("Was unable to retrieve or save stock id\n")
         return
 
 def transform_date_for_yahoo_financials(date):
