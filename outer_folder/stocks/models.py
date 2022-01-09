@@ -9,8 +9,6 @@ from django.db import models
 from django.db.models.constraints import UniqueConstraint
 
 
-# Create your models here.
-
 class StockSymbol(models.Model):
     name = models.CharField(max_length=10)
 
@@ -23,7 +21,6 @@ class StockSymbol(models.Model):
         #stocks = getStockSymbols(get_top_25_gainers_chart())
         print(stocks)
     
-
 
 class PriceData(models.Model):
     stock = models.ForeignKey(StockSymbol, on_delete=models.CASCADE)
@@ -51,7 +48,10 @@ class StockArticle(models.Model):
     UniqueConstraint(fields=['stock', 'date', 'name'], name='unique_article')
 
     def __str__(self):
-        return self.StockArticle_text
+        return self.stock, self.name
+    
+    class Meta:
+        ordering=['-date']
 
 
 class StockLoser(models.Model):
@@ -64,6 +64,11 @@ class StockLoser(models.Model):
 
     UniqueConstraint(fields=['stock', 'date'], name='unique_losing_stock')
 
+    def __str__(self):
+        return self.stock, self.date, self.change_percentage
+    class Meta:
+        ordering = ['-date', 'change_percentage']
+
 
 class StockGainer(models.Model):
     stock = models.ForeignKey(StockSymbol, on_delete=models.CASCADE)
@@ -75,9 +80,8 @@ class StockGainer(models.Model):
 
     UniqueConstraint(fields=['stock', 'date'], name='unique_gaining_stock')
 
+    def __str__(self):
+        return self.stock, self.date, self.change_percentage
     
-
-
-
-
-# considering stockSymbol model - just pk and stockSymbol --> all others reference and add to 
+    class Meta:
+        ordering = ['-date', '-change_percentage']
