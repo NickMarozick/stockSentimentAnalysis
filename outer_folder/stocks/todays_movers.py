@@ -6,6 +6,7 @@ from datetime import datetime
 from django.conf import settings 
 from django.db import models
 from .models import StockLoser, StockSymbol, StockGainer
+import stocks.utils as utils
 
 
 def get_top_25_gainers_chart():
@@ -23,17 +24,22 @@ def get_top_25_losers_chart():
     return losers_table, "losers"
 
 def get_or_save_stock_symbol_id(ticker):
-    try:
-        id = StockSymbol.objects.get(name=ticker).value('id')
-        return id
-    except:
-        try: 
-            app = StockSymbol.objects.create(name=ticker)
-            return app.id
-        except Exception as e:
-            print('save failed: ', e)
+    valid = utils.is_valid_stock_symbol(ticker)
+
+    if valid:
+        try:
+            id = StockSymbol.objects.get(name=ticker).id
+            return id
+        except:
+            try: 
+                app = StockSymbol.objects.create(name=ticker)
+                return app.id
+            except Exception as e:
+                print('save failed: ', e)
             return
-    return 
+    else:
+        print("Invalid Stock Symbol: %s" % ticker)
+        return
 
 def parse_and_save_table(table, table_type):
     if table_type=="gainers":
