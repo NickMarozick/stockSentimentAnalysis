@@ -16,6 +16,7 @@ def get_or_save_stock_symbol_id(ticker):
         except:
             try: 
                 app = StockSymbol.objects.create(name=ticker)
+                print(type(app.id))
                 return app.id
             except Exception as e:
                 print('save failed: ', e)
@@ -63,23 +64,34 @@ def get_and_store_stock_pricing_data(ticker):
     return
         
 
-def get_adnd_store_multiple_stocks_pricing_data(stocks):
+def get_and_store_multiple_stocks_pricing_data(stocks):
     for stock in stocks:
         # checks if price data exists for a stock entry
-        last_stock_price_entry_date = sqlite_utils.check_if_stored_price_data_for_input_symbol(conn, stock)
+        try: 
+            id = get_or_save_stock_symbol_id(stock)
+            last_stock_price_entry_date = get_stock_most_current_price_data_date(stock)
+            print("Last stock price date: %s" % last_stock_price_entry_date)
 
-        if last_stock_price_entry_date == "None":
-            prices = get_stock_data_all_time(stock)
+            if last_stock_price_entry_date == None:
+                print("Could not find price data for likely invalid stock name %s" % stock)
 
-        elif last_stock_price_entry_date is None:
-            prices = get_stock_data_all_time(stock)
-            
-        else:
-            # increment date so that we don't duplicate entries
-            incremented_date = utils.incrementDate(last_stock_price_entry_date)
-            prices = get_stock_data_from_date(stock, incremented_date)
+            else:
+                # increment date so that we don't duplicate entries
+                incremented_date = utils.increment_date(last_stock_price_entry_date)
+                prices = get_stock_data_from_date(stock, incremented_date)
+                for price in prices:
+                    try:
+                        PriceData.objects.create(stock_id=id, date=price['formatted_date'], open=price['open'],
+                            close=price['close'], volume=price['volume'])
+                    except Exception as e:
+                        print ("Could not create PriceData object for %s. Error: %s\n" % (price['formatted_date'], e))
+        except Exception as e:
+            print("Stock input %s likely not a valid stock. Error: %s" %(stock, e))
+    print("Finished retrieving and storing price data for all stocks\n")
+    return
 
-        sqlite_utils.insertPrices(conn, stock, prices)
+        #sqlite_utils.insertPrices(conn, stock, prices)
+        # save stock prices to PriceData per stock
 
 def get_stock_most_current_price_data_date(ticker):
     """
@@ -126,6 +138,7 @@ def get_todays_date_yahoo_financials():
     return reformatedDate
 
 
+# Haven't edited below
 def _get_price_data_for_ticker(ticker, conn):
     try:
         prices = get_stock_data_all_time(ticker)

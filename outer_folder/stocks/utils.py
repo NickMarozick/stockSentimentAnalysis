@@ -75,11 +75,12 @@ def getTodaysDateWithHour():
                       str(date.day) + " " + str(date.hour) )
     return reformatedDate
 
-def incrementDate(dateInput):
+def increment_date(dateInput):
         '''
         This function takes a date string in the format (YYYY-MM-DD), converts
         into a datetime object, increments by one day, converts the datetime
-        back into a formatted string, and returns the incremented date string
+        back into a formatted string, and returns the incremented date string. Used for
+        yahooFinancials
 
         Input : date string in the format YYYY-MM-DD
 
