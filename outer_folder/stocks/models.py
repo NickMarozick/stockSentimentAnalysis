@@ -25,14 +25,17 @@ class StockSymbol(models.Model):
 class PriceData(models.Model):
     stock = models.ForeignKey(StockSymbol, on_delete=models.CASCADE)
     date = models.DateField(default=datetime(1800, 1, 1))
-    low = models.DecimalField(decimal_places=2, max_digits=20, null=True)
-    high = models.DecimalField(decimal_places=2, max_digits=20, null=True)
+    open = models.DecimalField(decimal_places=4, max_digits=20, null=True)
+    close = models.DecimalField(decimal_places=4, max_digits=20, null=True)
     volume = models.BigIntegerField(null=True)
 
     UniqueConstraint(fields=['stock', 'date'], name='unique_price_data')
 
     def __str__(self):
-        return self.low
+        return self.stock, self.date, self.close
+    
+    class Meta: 
+        ordering=['-date']
 
 
 class StockArticle(models.Model):
