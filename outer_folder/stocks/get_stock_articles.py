@@ -2,6 +2,7 @@ import requests
 import recordtype
 from datetime import datetime, timedelta
 import stocks.utils as utils
+from django.db.models import Max
 from .models import StockSymbol, StockArticle 
 
 FIELDS = ['stockSymbol', 'name', 'url', 'content', 'description', 'scraper', 'date']
@@ -38,7 +39,7 @@ def get_last_date_stored_articles(ticker):
                 return revised_date
 
         except Exception as e:
-            print("Error in getting most current price data date: %s" % e)
+            print("Error in getting most current article data date: %s" % e)
             return 
 
     else: 
@@ -85,7 +86,7 @@ def get_and_store_articles_for_stocks(stocks, date):
 def save_stock_article(article):
     id = get_or_save_stock_symbol_id(article.stockSymbol)
     try:
-        StockArticle.create(stock_id=id, name=article.name, url=article.url, content=article.content, description=article.description, date=article.date, scraper=article.scraper)
+        StockArticle.objects.create(stock_id=id, name=article.name, url=article.url, content=article.content, description=article.description, date=article.date, scraper=article.scraper)
     #stock, date, sentiment, name, url, content, description, scraper
     except Exception as e:
         print("could not save article named %s for %s stock. Error: %s" % (article.name, article.stockSymbol, e))
