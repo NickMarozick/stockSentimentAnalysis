@@ -13,7 +13,7 @@ def createArticle(*FIELDS):
     return Article(*FIELDS)
 
 
-def getMaxDateForStockArticles()->str:
+def get_max_date_for_stock_article_api()->str:
     """ This function uses datetime to calculate the maximum date from today
     that can be utilized with the news finders and returns a reformatedDate
 
@@ -61,8 +61,6 @@ def transform_date_for_yahoo_financials(date):
     return reformatedDate
 
 
-
-
 def getTodaysDateWithHour():
     """
     This function gets todays date with hour
@@ -75,7 +73,7 @@ def getTodaysDateWithHour():
                       str(date.day) + " " + str(date.hour) )
     return reformatedDate
 
-def increment_date(dateInput):
+def increment_date(date_input):
         '''
         This function takes a date string in the format (YYYY-MM-DD), converts
         into a datetime object, increments by one day, converts the datetime
@@ -86,15 +84,15 @@ def increment_date(dateInput):
 
         Returns: date string in the format YYYY-MM-DD, incremented by one day
         '''
-        dateInput = dateInput.split("-")
-        datetime_date = datetime(int(dateInput[0]), int(dateInput[1]), int(dateInput[2]))
+        date_input = date_input.split("-")
+        datetime_date = datetime(int(date_input[0]), int(date_input[1]), int(date_input[2]))
         datetime_date += timedelta(days=1)
 
         incremented_date = str(datetime_date.year) + "-" + str(datetime_date.month) + "-" + str(datetime_date.day)
 
         return incremented_date
 
-def compareArticleDates(latest_database_date, max_date):
+def compare_article_dates(latest_database_date, max_date):
     '''
     This function compares two different formatted dates, one from
     our article database in the format "YYYY-MM-DD" and the max amount of days
