@@ -16,7 +16,6 @@ def get_or_save_stock_symbol_id(ticker):
         except:
             try: 
                 app = StockSymbol.objects.create(name=ticker)
-                print(type(app.id))
                 return app.id
             except Exception as e:
                 print('save failed: ', e)
@@ -45,9 +44,11 @@ def get_stock_data_from_date(ticker, date):
     prices = historicalStockPrices[ticker]["prices"]
     return prices
 
-# ideally would like checker on what price data already exists (save time)
 def get_and_store_stock_pricing_data(ticker):
-    prices = get_stock_data_all_time(ticker)
+    date = get_stock_most_current_price_data_date(ticker)
+    incremented_date = utils.increment_date(date)
+    print("Incremented last date price data retrieved: %s. If none, 1/2/1800", incremented_date)
+    prices = get_stock_data_from_date(ticker, date)
     try:
         id = get_or_save_stock_symbol_id(ticker)
         for price in prices:
@@ -90,8 +91,6 @@ def get_and_store_multiple_stocks_pricing_data(stocks):
     print("Finished retrieving and storing price data for all stocks\n")
     return
 
-        #sqlite_utils.insertPrices(conn, stock, prices)
-        # save stock prices to PriceData per stock
 
 def get_stock_most_current_price_data_date(ticker):
     """
@@ -137,31 +136,20 @@ def get_todays_date_yahoo_financials():
     reformatedDate= str(date.year) + "-" + str(date.month) + "-" + str(date.day)
     return reformatedDate
 
-
-# Haven't edited below
-def _get_price_data_for_ticker(ticker, conn):
-    try:
-        prices = get_stock_data_all_time(ticker)
-        get_and_store_stock_pricing_data(ticker, conn)
-    except Exception as e:
-        print("Invalid StockSymbol!")
-
-
-def user_search_and_store_stock_pricing_loop(conn):
-    """Search and store prices for stock based on user input.
-
-    Args:
-        conn: <class name of conn... same as type(conn)>
-    """
-    while True:
-        tickers = input("Enter stock symbol(s) (e.g., APPL,AMC) or 'quit' to "
-                        "end: ")
-        if tickers == "quit" :
-            break
-        else:
-            if "," in tickers:
-                ticker = ticker.strip()
-                for ticker in tickers.split(","):
-                    _get_price_data_for_ticker(ticker, conn)
-            else:
-                _get_price_data_for_ticker(ticker, conn)
+# def user_search_and_store_stock_pricing_loop():
+#     """Search and store prices for stock based on user input.
+#     """
+#     while True:
+#         tickers = input("Enter stock symbol(s) (e.g., APPL,AMC) or 'quit' to "
+#                         "end: ")
+#         if tickers == "quit" :
+#             break
+#         else:
+#             if "," in tickers:
+#                 ticker = ticker.strip()
+#                 for ticker in tickers.split(","):
+#                     get_and_store_stock_pricing_data(ticker)
+#             else:
+#                 get_and_store_stock_pricing_data(ticker)
+#     print("Finished loop\n")
+#     return
