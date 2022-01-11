@@ -32,7 +32,8 @@ class PriceData(models.Model):
     UniqueConstraint(fields=['stock', 'date'], name='unique_price_data')
 
     def __str__(self):
-        return self.stock, self.date, self.close
+        template = '{0.stock} {0.date} {0.close}'
+        return template.format(self)
     
     class Meta: 
         ordering=['-date']
@@ -51,7 +52,8 @@ class StockArticle(models.Model):
     UniqueConstraint(fields=['stock', 'date', 'name'], name='unique_article')
 
     def __str__(self):
-        return self.stock, self.name
+        template = '{0.stock} {0.name} {0.date}'
+        return template.format(self)
     
     class Meta:
         ordering=['-date']
@@ -68,7 +70,8 @@ class StockLoser(models.Model):
     UniqueConstraint(fields=['stock', 'date'], name='unique_losing_stock')
 
     def __str__(self):
-        return self.stock, self.date, self.change_percentage
+        template = '{0.stock} {0.date} {0.change_percentage}'
+        return template.format(self)
     class Meta:
         ordering = ['-date', 'change_percentage']
 
@@ -84,7 +87,8 @@ class StockGainer(models.Model):
     UniqueConstraint(fields=['stock', 'date'], name='unique_gaining_stock')
 
     def __str__(self):
-        return self.stock, self.date, self.change_percentage
+        template = '{0.stock} {0.date} {0.change_percentage}'
+        return template.format(self)
     
     class Meta:
         ordering = ['-date', '-change_percentage']
