@@ -26,6 +26,7 @@ def index(request):
     context = {
         'latest_gainer_list': latest_gainer_list,
         'stock_list': stock_list,
+        'gain_df': gain_df,
         'gainer_graph_div': gainer_div,
         'loss_graph_div': loss_div,
     }
