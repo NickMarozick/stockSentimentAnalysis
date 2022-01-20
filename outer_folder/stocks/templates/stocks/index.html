@@ -1,3 +1,7 @@
+ <head> 
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+ </head>
+
 {% if latest_gainer_list %}
     <ul>
     {% for gainer in latest_gainer_list %}
@@ -18,3 +22,13 @@
 {{stock_list}}
     <p>No Stock Symbols are Stored.</p>
 {% endif %}
+
+<div>
+    <p><em>Stock Gainers</em></p>
+    {{ gainer_graph_div|safe }}
+</div>
+
+<div>
+    <p><em>Stock Losers</em></p>
+    {{ loss_graph_div|safe }}
+</div>
