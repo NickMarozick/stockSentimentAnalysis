@@ -2,6 +2,9 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
  </head>
 
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'stocks/style.css' %}">
+
 {% if latest_gainer_list %}
     <ul>
     {% for gainer in latest_gainer_list %}
@@ -74,3 +77,30 @@
       </div>
     </div>
   </div>
+
+<script>     
+    var table_index=0;
+    var num = 5;
+
+      function show_table() {
+          var i; 
+          var table_data = document.getElementsByTagName("tr");
+          
+          for (i=1; i<table_data.length; i++) {
+              table_data[i].style.display = "none";
+          }
+          
+          if (table_index > table_data.length -1) {table_index=1}
+            for (j=0; j<num; j++) {
+              x = j+1+table_index;
+              if (x > table_data.length-1) {x=x-11;}
+              table_data[x].style.display = "table-row";
+             }
+            table_index++;
+         
+          setTimeout(show_table, 7000);
+      }
+     
+      show_table();
+
+</script>

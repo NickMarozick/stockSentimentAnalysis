@@ -1,0 +1,16 @@
+<style>
+@font-face {
+     font-family: 'digital';
+     src: url(% static './digital-7.ttf' %);
+ }
+ tr:nth-child(even) {
+     background-color: dimgray;
+ }
+ tr:nth-child(odd) {
+     background-color:royalblue;
+ }
+ td, th {
+     font-family: 'digital';
+     color: white;
+ }
+</style>
