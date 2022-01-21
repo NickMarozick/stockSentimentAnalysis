@@ -1,7 +1,7 @@
 <style>
 @font-face {
-     font-family: 'digital';
-     src: url(% static './digital-7.ttf' %);
+     font-family: digital;
+     src: url("{% static '/digital-7.ttf' %}" ) format("truetype")
  }
  tr:nth-child(even) {
      background-color: dimgray;
@@ -9,8 +9,40 @@
  tr:nth-child(odd) {
      background-color:royalblue;
  }
- td, th {
-     font-family: 'digital';
+ td, th, tr {
+     color: white;
+     border: none;
+     font-family: "IBM Plex Sans";
+ }
+ body  {
+     background-color: black;
      color: white;
  }
+ table {
+     border: none !important;
+ }
+ .wrapper1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: 10px;
+ }
+ .wrapper2 {
+    display: grid;
+    grid-template-columns: 1fr 50fr 50fr 1fr;
+    grid-gap: 10px;
+ }
+ /* .wrapper3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 10px;
+ } */
+ .box_graph{
+    resize: both; 
+    overflow: auto; 
+    border: 1px solid; 
+    height: 350px;
+    width: 250 px;
+    /* padding: 2px; */
+ }
+
 </style>
