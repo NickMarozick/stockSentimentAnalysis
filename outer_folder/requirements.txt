@@ -14,3 +14,7 @@ virtualenv==20.13.0
 virtualenv-clone==0.5.7
 virtualenvwrapper==4.8.4
 ipython==7.31.1
+celery==5.2.3
+redis==4.1.1
+django-celery-beat==2.2.1
+django-celery-results==2.2.0
