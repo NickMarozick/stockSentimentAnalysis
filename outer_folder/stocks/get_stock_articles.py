@@ -107,7 +107,11 @@ def get_articles_for_stock(stockSymbol, date):
         'sortBy=popularity&'
         'apiKey=ec07e0116ce8450c8b677e877b2e8761')
     url= url_pattern.format(stockSymbol, date)
-    response = requests.get(url).json()
+    response = requests.get(url)
+    headers = response.headers
+    remaining_daily_calls, refresh_date = headers['x-cache-remaining'], headers['x-cache-expires']
+    # can use remaining daily calls and refresh date later for throttling down automated cron jobs
+    response = response.json()
 
     if response["status"]=="error":
         print(response["message"])
@@ -125,6 +129,8 @@ def get_articles_for_stock(stockSymbol, date):
 def create_article(*FIELDS):
     return Article(*FIELDS)
 
+
+# need to fix that articles are being saved as tuples and not strings
 
 # Need createArticle 
 # need recordType import? 

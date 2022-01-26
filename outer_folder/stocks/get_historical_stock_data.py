@@ -31,9 +31,9 @@ def set_ticker(ticker):
 def get_stock_data_all_time(ticker):
     today = utils.getTodaysDate()
     yahoo_financials = set_ticker(ticker)
-    historicalStockPrices = yahoo_financials.get_historical_price_data(
+    historical_stock_prices = yahoo_financials.get_historical_price_data(
         "1816-01-01", today, "daily")
-    prices = historicalStockPrices[ticker]["prices"]
+    prices = historical_stock_prices[ticker]["prices"]
     return prices
 
 def get_stock_data_from_date(ticker, date):

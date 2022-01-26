@@ -20,8 +20,9 @@ def index(request):
     gain_df= pd.DataFrame(list(gainers_queryset), columns=['stock', 'date', 'change_percentage', 'price', 'trade_volume'])
     loss_df= pd.DataFrame(list(losers_queryset), columns=['stock', 'date', 'change_percentage', 'price', 'trade_volume'])
     gainer_fig = px.bar(gain_df, y='change_percentage', x='stock', title='Stock Gainers', labels = {'stock': 'Stock Ticker', 'change_percentage': 'Change Percentage'}, text = ["$ " + str(elem) for elem in gain_df['price']])
-    loss_fig = px.bar(loss_df, y='change_percentage', x='stock', title='Stock Losers', labels = {'stock': 'Stock Ticker', 'change_percentage': 'Change Percentage'}, text = ["$ " + str(elem) for elem in gain_df['price']])
+    loss_fig = px.bar(loss_df, y='change_percentage', x='stock', title='Stock Losers', labels = {'stock': 'Stock Ticker', 'change_percentage': 'Change Percentage'}, text = ["$ " + str(elem) for elem in loss_df['price']])
     gainer_fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)',})
+    loss_fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)',})
     gainer_div = plot(gainer_fig, auto_open=False, output_type="div")
     loss_div = plot(loss_fig, auto_open=False, output_type="div")
     context = {

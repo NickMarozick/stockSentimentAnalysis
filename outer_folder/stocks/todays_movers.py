@@ -9,6 +9,18 @@ from .models import StockLoser, StockSymbol, StockGainer
 import stocks.utils as utils
 
 
+def scrape_gainers():
+    gainers_table, type = get_top_25_gainers_chart()
+    parse_and_save_table(gainers_table, type)
+    print("Finished scraping gainers\n")
+    return
+
+def scrape_losers():
+    losers_table, type = get_top_25_losers_chart()
+    parse_and_save_table(losers_table, type)
+    print("Finished scraping losers\n")
+    return
+
 def get_top_25_gainers_chart():
     top_25_gainers_url = 'https://finance.yahoo.com/gainers'
     gainers_request = requests.get(top_25_gainers_url)
