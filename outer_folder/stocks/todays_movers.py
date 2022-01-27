@@ -3,6 +3,7 @@ import requests
 from datetime import datetime
 from bs4 import BeautifulSoup
 from datetime import datetime
+from django.utils import timezone
 from django.conf import settings 
 from django.db import models
 from .models import StockLoser, StockSymbol, StockGainer
@@ -54,6 +55,8 @@ def get_or_save_stock_symbol_id(ticker):
         return
 
 def parse_and_save_table(table, table_type):
+
+    tz_now = timezone.now().replace(minute=0, second=0, microsecond=0)
     if table_type=="gainers":
         for tr in table: 
             td = tr.find_all('td')
@@ -62,13 +65,11 @@ def parse_and_save_table(table, table_type):
             volume = adapt_trade_volume(td[5].text)
             change_percent = adapt_change_percentage(td[4].text) 
             avg_volume = adapt_trade_volume(td[6].text) 
-            scrape_date = datetime.now()
-            scrape_date = datetime(scrape_date.year, scrape_date.month, scrape_date.day, scrape_date.hour)
-
+            scrape_date = tz_now
+            
             try: 
                 id = get_or_save_stock_symbol_id(ticker)
                 print(id)
-                stock = StockGainer.objects.create(stock_id=id)
                 StockGainer.objects.create(stock_id=id, date=scrape_date, change_percentage=change_percent, price=stock_price, trade_volume=volume, avg_3_month_volume=avg_volume)
             except Exception as e:
                 print("Could not store Stock Gainer %s: %s" %(ticker, e))
@@ -83,13 +84,11 @@ def parse_and_save_table(table, table_type):
             volume = adapt_trade_volume(td[5].text)
             change_percent = adapt_change_percentage(td[4].text) 
             avg_volume = adapt_trade_volume(td[6].text) 
-            scrape_date = datetime.now()
-            scrape_date = datetime(scrape_date.year, scrape_date.month, scrape_date.day, scrape_date.hour)
+            scrape_date = tz_now
 
             try: 
                 id = get_or_save_stock_symbol_id(ticker)
                 print(id)
-                stock = StockLoser.objects.create(stock_id=id)
                 StockLoser.objects.create(stock_id=id, date=scrape_date, change_percentage=change_percent, price=stock_price, trade_volume=volume, avg_3_month_volume=avg_volume)
             except Exception as e:
                 print("Could not store Stock Gainer %s: %s" %(ticker, e))
