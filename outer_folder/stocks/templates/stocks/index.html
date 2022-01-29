@@ -13,29 +13,20 @@
 <h1 style="text-align:center">Stock Dashboard</h1>
 
 <div class="wrapper1">
-    <div class="box a">
-                {% if latest_gainer_list %}
-            <ul>
-            {% for gainer in latest_gainer_list %}
-                <li>{{ gainer }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>No Gainers are available.</p>
-        {% endif %}
-
-        {% if results %}
-            <ul>
-            {% for stock in stock_list %}
-                <li>{{ stock }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-        {{stock_list}}
-            <p>No Stock Symbols are Stored.</p>
-        {% endif %}
+    <div class="box_a">
+        <form>
+        <fieldset style="overflow:scroll; height: 200px">
+        <legend>Select Stock to Track</legend>
+        <div class ="checkbox_select">
+        {% for stock in stock_objects %}
+            <li><input type="checkbox" name="stock_list" value="{{stock.id}}"/><lable for={{stock.id}}>{{stock.name}}</lable></li>
+        {% endfor %}
+        </div>
+            <button type="submit"> Select Stock </button>
+        </fieldset>
+        </form>
     </div>
-    <div class="box b">
+    <div class="box_b">
         <table>
             <tr>
                 <th>Stock</th>
@@ -61,7 +52,13 @@
                 {% endfor %}
         </table>
         </div>
-    <div class="box c"> Future Carousel </div>
+    <div class="box_c">
+        <form method="post">
+            {% csrf_token %}
+                {{stock_form}}
+                <button type="submit">Submit</button>
+          </form>
+    </div>
 </div>
 
 <div class="wrapper2">

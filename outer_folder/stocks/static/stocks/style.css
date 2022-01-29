@@ -45,4 +45,26 @@
     /* padding: 2px; */
  }
 
+ .checkbox_select{
+    width: 100%;
+    column-count: 2;
+    display: block;
+ }
+
+ .checkbox_select li{
+     list-style: None;
+ }
+
+ .box_c {
+    overflow: scroll;
+    height: 200px;
+    width: 100%;
+    column-count: 2;
+    display: block;
+ }
+
+ .box_c li{
+     list-style: None;
+ }
+
 </style>

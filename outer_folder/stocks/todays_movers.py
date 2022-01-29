@@ -45,7 +45,7 @@ def get_or_save_stock_symbol_id(ticker):
             return id
         except:
             try: 
-                app = StockSymbol.objects.create(name=ticker)
+                app = StockSymbol.objects.create(name=ticker, user_selected=False)
                 return app.id
             except Exception as e:
                 print('save failed: ', e)
@@ -65,12 +65,11 @@ def parse_and_save_table(table, table_type):
             volume = adapt_trade_volume(td[5].text)
             change_percent = adapt_change_percentage(td[4].text) 
             avg_volume = adapt_trade_volume(td[6].text) 
-            scrape_date = tz_now
             
             try: 
                 id = get_or_save_stock_symbol_id(ticker)
                 print(id)
-                StockGainer.objects.create(stock_id=id, date=scrape_date, change_percentage=change_percent, price=stock_price, trade_volume=volume, avg_3_month_volume=avg_volume)
+                StockGainer.objects.create(stock_id=id, date=tz_now, change_percentage=change_percent, price=stock_price, trade_volume=volume, avg_3_month_volume=avg_volume)
             except Exception as e:
                 print("Could not store Stock Gainer %s: %s" %(ticker, e))
         print("Finished saving stock gainers\n")
@@ -84,12 +83,11 @@ def parse_and_save_table(table, table_type):
             volume = adapt_trade_volume(td[5].text)
             change_percent = adapt_change_percentage(td[4].text) 
             avg_volume = adapt_trade_volume(td[6].text) 
-            scrape_date = tz_now
 
             try: 
                 id = get_or_save_stock_symbol_id(ticker)
                 print(id)
-                StockLoser.objects.create(stock_id=id, date=scrape_date, change_percentage=change_percent, price=stock_price, trade_volume=volume, avg_3_month_volume=avg_volume)
+                StockLoser.objects.create(stock_id=id, date=tz_now, change_percentage=change_percent, price=stock_price, trade_volume=volume, avg_3_month_volume=avg_volume)
             except Exception as e:
                 print("Could not store Stock Gainer %s: %s" %(ticker, e))
         print("Finished saving stock losers\n")

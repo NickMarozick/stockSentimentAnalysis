@@ -4,10 +4,13 @@ import plotly.graph_objs as go
 import plotly.express as px
 from plotly.offline import plot
 import json
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.template import loader
+from django.contrib import messages
 #from outer_folder.stocks.models import StockGainer
 from .models import StockGainer, StockSymbol, StockLoser
+from .forms import SelectStockForm
 
 def index(request):
     latest_gainer_list = StockGainer.objects.order_by('stock_id')[:5]
@@ -15,6 +18,7 @@ def index(request):
 
 
     template = loader.get_template('stocks/index.html')
+    stock_objects = StockSymbol.objects.all()
     losers_queryset = StockLoser.objects.values_list('stock__name', 'date', 'change_percentage', 'price', 'trade_volume')
     gainers_queryset = StockGainer.objects.values_list('stock__name', 'date', 'change_percentage', 'price', 'trade_volume')
     gain_df= pd.DataFrame(list(gainers_queryset), columns=['stock', 'date', 'change_percentage', 'price', 'trade_volume'])
@@ -25,11 +29,25 @@ def index(request):
     loss_fig.update_layout({'plot_bgcolor': 'rgba(0, 0, 0, 0)','paper_bgcolor': 'rgba(0, 0, 0, 0)', 'font_color': 'white'})
     gainer_div = plot(gainer_fig, auto_open=False, output_type="div")
     loss_div = plot(loss_fig, auto_open=False, output_type="div")
+
+    if request.method == "POST":
+        stock_form = SelectStockForm(request.POST)
+        if stock_form.is_valid():
+            stock_form.save()
+            messages.success(request, ('Your stock form was successfully saved!'))
+        else:
+            messages.error(request, 'Error saving form')
+
+        return redirect("main:homepage")
+
+    stock_form = SelectStockForm(initial={'select_stock': StockSymbol.objects.filter(user_selected=True)})
+
     context = {
         'latest_gainer_list': latest_gainer_list,
-        'stock_list': stock_list,
+        'stock_objects': stock_objects,
         'gain_df': gain_df,
         'gainer_graph_div': gainer_div,
         'loss_graph_div': loss_div,
+        'stock_form': stock_form,
     }
     return HttpResponse(template.render(context, request))
