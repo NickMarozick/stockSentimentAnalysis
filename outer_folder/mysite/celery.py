@@ -7,7 +7,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'mysite.settings')
 # Get the base REDIS URL, default to redis' default
 BASE_REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379')
 
-app = Celery('mysite')
+app = Celery('mysite') #might need changing
 
 # - namespace='CELERY' means all celery-related configuration keys
 #   should have a `CELERY_` prefix.

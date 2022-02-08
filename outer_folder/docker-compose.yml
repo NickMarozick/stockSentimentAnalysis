@@ -1,13 +1,13 @@
 version: '3'
  
 services:
-  app:
+  django:
     build:
       context: .
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app
+      - .:/app
     command: >
       sh -c "python3 manage.py migrate &&
              python3 manage.py wait_for_db &&
@@ -15,33 +15,35 @@ services:
  
     environment:
       - DB_HOST=db
-      - DB_NAME=app
-      - DB_USER=postgres
-      - DB_PASS=password
+      - DB_NAME=stock_project_database
+      - DB_USER=stock_project_database_user
+      - DB_PASS=test
+      - DEBUG=1
+      - CELERY_BROKER=redis://redis:6379/0
     depends_on:
-      - db
-             
+      - db        
   db:
     image: postgres:14
     environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=stock_project_database
+      - POSTGRES_USER=stock_project_database_user
+      - POSTGRES_PASSWORD=test
   redis:
     image: redis
   celery:
     restart: always
     build:
       context: .
-    command: celery -A app worker -l info
+    command: celery -A mysite worker -l INFO
     volumes:
-      - ./app:/app
+      - .:/app
     environment:
       - DB_HOST=db
-      - DB_NAME=app
-      - DB_USER=postgres
-      - DB_PASS=password
+      - DB_NAME=stock_project_database
+      - DB_USER=stock_project_database_user
+      - DB_PASS=test
+      - CELERY_BROKER=redis://redis:6379/0
     depends_on:
       - db
       - redis
-      - app
+      - django

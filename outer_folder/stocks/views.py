@@ -14,7 +14,7 @@ from .forms import SelectStockForm
 
 def index(request):
     latest_gainer_list = StockGainer.objects.order_by('stock_id')[:5]
-    stock_list = StockSymbol.objects.get(id=1)
+    #stock_list = StockSymbol.objects.get(id=1)
 
 
     template = loader.get_template('stocks/index.html')
@@ -38,7 +38,7 @@ def index(request):
         else:
             messages.error(request, 'Error saving form')
 
-        return redirect("main:homepage")
+        return redirect("")
 
     stock_form = SelectStockForm(initial={'select_stock': StockSymbol.objects.filter(user_selected=True)})
 

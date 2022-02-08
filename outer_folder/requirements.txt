@@ -19,4 +19,3 @@ redis==4.1.1
 django-celery-beat==2.2.1
 django-celery-results==2.2.0
 psycopg2==2.9.3
-#postgresql
