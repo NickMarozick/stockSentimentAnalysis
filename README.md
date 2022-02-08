@@ -2,30 +2,32 @@
 
 # How to run:
 
-Make sure you are using Python3.
-
-In a virtualenv, run: `pip install -f requirements.txt`. This will install
-all dependencies.
-
-TBD
+1) Clone the project from git
+2) Navigate to 'outer_folder' directory
+3) ```docker-compose up```
+4) In a new terminal enter into the docker shell, ```docker exec -it <container_name> sh```
+5) Get into the Django Shell: ```python manage.py shell```
+6) Start up the celery beat scheduler: ```celery -A mysite worker --beat -S django -l info```
 
 
 # Tasks
 
 ## Finished
 
-- news scraper (newsApi.py)
-- content scraper (content_scraper.py)
-- sqlite utils functions (create db, create table, insert articles, find
-  articles by symbol, find articles after date)
-- stock historical data theough Yahoo Finance API (stock_historical_data)
-- Jupyter notebook for analysis and visualizations
-- database and helper functions for stock data
+- news scraper (get_stock_articles.py)
+- content scraper (get_content_from_articles.py)
+- django models created
+- stock historical data theough Yahoo Finance API (get_historical_stock_data.py)
+- initial views and gainer graphs
+- dockerfile and docker-compose
 
 ## ToDo
 
+- checkbox to select stocks to study
+- auto-add of stocks to study (from gainers/ losers)
+- host site
 - sentiment analysis (sklearn_sa.py)
 - ground truth for articles summary (positive or negative, binary)
 - method for comparing senitment analysis results with ground truth
-- alert mechanisms for gaining stocks
+- alert mechanisms for gaining stocks (auto-email)
 
