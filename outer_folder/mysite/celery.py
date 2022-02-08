@@ -22,12 +22,9 @@ app.conf.broker_url = BASE_REDIS_URL
 # this allows you to schedule items in the Django admin.
 app.conf.beat_scheduler = 'django_celery_beat.schedulers.DatabaseScheduler'
 
-name='Nick'
-
 app.conf.beat_schedule = {
-    'hi_every_15_seconds': {
-        'task': 'say_hello',
-        'schedule': 5.0,
-        'args': (name,),
+    'scrape_movers_on_weekdays': {
+        'task': 'scrape_mover_info',
+        'schedule': crontab(day_of_week='mon-fri', hour='5-14', minute=0)
     },
 }

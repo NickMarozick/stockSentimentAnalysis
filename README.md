@@ -6,8 +6,7 @@
 2) Navigate to 'outer_folder' directory
 3) ```docker-compose up```
 4) In a new terminal enter into the docker shell, ```docker exec -it <container_name> sh```
-5) Get into the Django Shell: ```python manage.py shell```
-6) Start up the celery beat scheduler: ```celery -A mysite worker --beat -S django -l info```
+5) Start up the celery beat scheduler: ```celery -A mysite worker --beat -S django -l info```
 
 
 # Tasks
@@ -26,6 +25,8 @@
 - checkbox to select stocks to study
 - auto-add of stocks to study (from gainers/ losers)
 - host site
+- automated task schedule for fetching & storing articles and price data
+- possible cleanup tasks of data after certain period of time or after sentiment calculation etc.
 - sentiment analysis (sklearn_sa.py)
 - ground truth for articles summary (positive or negative, binary)
 - method for comparing senitment analysis results with ground truth
