@@ -38,9 +38,8 @@ def index(request):
         else:
             messages.error(request, 'Error saving form')
 
-        return redirect("")
-
-    stock_form = SelectStockForm(initial={'select_stock': StockSymbol.objects.filter(user_selected=True)})
+    #stock_form = SelectStockForm(initial={'selected_stock': [1, 2, 3, 4, 5]})
+    stock_form = SelectStockForm(initial={'selected_stock' : list(StockSymbol.objects.filter(user_selected=True).values_list('id', flat=True))})
 
     context = {
         'latest_gainer_list': latest_gainer_list,
