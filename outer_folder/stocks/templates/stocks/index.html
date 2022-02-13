@@ -54,8 +54,9 @@
         </div>
     <div class="box_c">
         <form action="" method="post">
-            {% csrf_token %}
-                {{stock_form}}
+            <legend>Select Stock to Track:</legend>
+                {% csrf_token %}
+                    {{stock_form.as_ul}}
                 <button type="submit">Submit</button>
           </form>
     </div>

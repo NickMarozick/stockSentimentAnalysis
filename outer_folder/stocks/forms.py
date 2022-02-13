@@ -11,6 +11,7 @@ class SelectStockForm(forms.Form):
     selected_stock = forms.MultipleChoiceField(
         widget=forms.CheckboxSelectMultiple,
         choices=choices,
+        label='',
     )
 
     def clean(self):

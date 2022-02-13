@@ -13,7 +13,7 @@ def createArticle(*FIELDS):
     return Article(*FIELDS)
 
 
-def get_max_date_for_stock_article_api()->str:
+def get_max_date_for_stock_article_api():
     """ This function uses datetime to calculate the maximum date from today
     that can be utilized with the news finders and returns a reformatedDate
 
