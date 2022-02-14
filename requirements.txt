@@ -59,7 +59,7 @@ nest-asyncio==1.4.3
 newspaper3k==0.2.8
 nltk==3.4.5
 notebook==6.2.0
-numpy==1.19.2
+numpy==1.21.0
 packaging==20.8
 pandas==1.2.4
 pandocfilters==1.4.3
