@@ -1,6 +1,6 @@
 import requests
 import recordtype
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import stocks.utils as utils
 from django.db.models import Max
 from .models import StockSymbol, StockArticle 
@@ -24,24 +24,24 @@ def transform_date_for_article_api(date):
 def get_last_date_stored_articles(ticker):
     """
     Returns:
-        Latest date for article data retrieved (if any)
+        Latest date in string format YYYY-MM-DD incrmented by one day for article data retrieved (if any) or None
     """    
     id = get_or_save_stock_symbol_id(ticker)
     if id:
         try:
-            date_dict = StockArticle.objects.filter(stock_id=id).aggregate(Max('date'))
-
-            # handles the condition of no date existing for price data 
-            if not date_dict['date__max']:
-                return None
-            else:
-                revised_date = utils.increment_date(date_dict['date__max'])
-                revised_date = transform_date_for_article_api(revised_date)
+            last_stored_date = StockArticle.objects.filter(stock_id=id).values_list('date', flat=True).order_by('-date')
+            if last_stored_date:
+                last_stored_date=last_stored_date[0]
+                revised_date = last_stored_date.strftime("%Y-%m-%d")
+                revised_date = utils.increment_date(revised_date)
                 return revised_date
+            else:
+                print("No existing stock article date for %s. Returning None" % ticker)
+                return None
 
         except Exception as e:
             print("Error in getting most current article data date: %s" % e)
-            return 
+            return
 
     else: 
         # condition reached if invalid stock name
@@ -73,13 +73,14 @@ def get_and_store_articles_for_stocks(stocks):
 
     for stock in stocks:
         last_stored_article_date = get_last_date_stored_articles(stock)
-        print(last_stored_article_date)
 
         if not last_stored_article_date:
-            print("None is true")
+            print("No previous stored article date for: ", stock)
             articles = get_articles_for_stock(stock, date)
         else:
+            print("Last stored article date: ", last_stored_article_date)
             articles = get_articles_for_stock(stock, last_stored_article_date)
+            
         # Fix Later: can be more efficient by passing stock name and list of articles per stock to function
         list_articles.extend(articles)
     save_stock_articles(list_articles)
