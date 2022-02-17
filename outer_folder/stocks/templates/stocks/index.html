@@ -14,28 +14,16 @@
 
 <div class="wrapper1">
     <div class="box_a">
-        <form>
-        <fieldset style="overflow:scroll; height: 200px">
-        <legend>Select Stock to Track</legend>
-        <div class ="checkbox_select">
-        {% for stock in stock_objects %}
-            <li><input type="checkbox" name="stock_list" value="{{stock.id}}"/><lable for={{stock.id}}>{{stock.name}}</lable></li>
-        {% endfor %}
-        </div>
-            <button type="submit"> Select Stock </button>
-        </fieldset>
-        </form>
-    </div>
-    <div class="box_b">
         <table>
-            <tr>
+            <h4>Stock Daily Movers</h4>
+            <tr class="mover_row">
                 <th>Stock</th>
                 <th>Date</th>
                 <th>Change Percentage</th>
                 <th>Price</th>
             </tr>
                 {% for row in gain_df.itertuples %}
-                <tr>
+                <tr class="mover_row">
                     <td>
                         {{row.stock}}
                     </td>
@@ -51,14 +39,39 @@
                 </tr>
                 {% endfor %}
         </table>
-        </div>
-    <div class="box_c">
+        <br></br>
+    </div>
+    <div class="box_b">
         <form action="" method="post">
             <legend>Select Stock to Track:</legend>
                 {% csrf_token %}
                     {{stock_form.as_ul}}
                 <button type="submit">Submit</button>
           </form>
+    </div>
+    <div class="box_c">
+        <table>
+            <h4>Recent Stock Articles</h4>
+            <tr class="article_row">
+                <th>Stock</th>
+                <th>Article Name</th>
+                <th>Date</th>
+            </tr>
+                {% for row in articles_df.itertuples %}
+                <tr class="article_row">
+                    <td>
+                        {{row.stock}}
+                    </td>
+                    <td>
+                        {{row.name}}
+                    </td>
+                    <td>
+                        {{row.date}}
+                    </td>
+                </tr>
+                {% endfor %}
+        </table>
+        <br></br>        
     </div>
 </div>
 
@@ -72,20 +85,16 @@
     </div>
     <div></div>
 </div>
-<!-- <div class="wrapper3">
-    <div class="box_graph">
-            {{ loss_graph_div|safe }} 
-    </div>
-</div> -->
+
 
 
 <script>     
     var table_index=0;
     var num = 5;
 
-      function show_table() {
+      function show_movers_table() {
           var i; 
-          var table_data = document.getElementsByTagName("tr");
+          var table_data = document.getElementsByClassName("mover_row");
           
           for (i=1; i<table_data.length; i++) {
               table_data[i].style.display = "none";
@@ -99,9 +108,36 @@
              }
             table_index++;
          
-          setTimeout(show_table, 7000);
+          setTimeout(show_mover_table, 6000);
       }
      
-      show_table();
+      show_movers_table();
+
+</script>
+
+<script>     
+    var table_index=0;
+    var num = 4;
+
+      function show_article_table() {
+          var i; 
+          var table_data = document.getElementsByClassName("article_row");
+          
+          for (i=1; i<table_data.length; i++) {
+              table_data[i].style.display = "none";
+          }
+          
+          if (table_index > table_data.length -1) {table_index=1}
+            for (j=0; j<num; j++) {
+              x = j+1+table_index;
+              if (x > table_data.length-1) {x=x-11;}
+              table_data[x].style.display = "table-row";
+             }
+            table_index++;
+         
+          setTimeout(show_article_table, 5000);
+      }
+     
+      show_article_table();
 
 </script>

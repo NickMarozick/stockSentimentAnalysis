@@ -55,7 +55,7 @@
      list-style: None;
  }
 
- .box_c {
+ .box_b {
     overflow: scroll;
     height: 200px;
     width: 100%;
@@ -63,8 +63,11 @@
     display: block;
  }
 
- .box_c li{
+ .box_b li{
      list-style: None;
+ }
+ h3 {
+     text-align: center;
  }
 
 </style>
