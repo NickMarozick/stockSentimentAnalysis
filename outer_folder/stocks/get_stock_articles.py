@@ -33,10 +33,16 @@ def get_last_date_stored_articles(ticker):
             if last_stored_date:
                 last_stored_date=last_stored_date[0]
                 revised_date = last_stored_date.strftime("%Y-%m-%d")
+
+                # check if last retrieved article date is 28 or more days prior and return None if so
+                if (datetime.now() - datetime.strptime(revised_date, '%Y-%m-%d')).days > 28:
+                    print("Previous stock article date is greater than 28 days prior. Using default search date for %s articles" % ticker)
+                    return None
+
                 revised_date = utils.increment_date(revised_date)
                 return revised_date
             else:
-                print("No existing stock article date for %s. Returning None" % ticker)
+                print("No previous stock article date for %s" % ticker)
                 return None
 
         except Exception as e:
@@ -75,10 +81,10 @@ def get_and_store_articles_for_stocks(stocks):
         last_stored_article_date = get_last_date_stored_articles(stock)
 
         if not last_stored_article_date:
-            print("No previous stored article date for: ", stock)
+            print("Using default date for: %s" % stock)
             articles = get_articles_for_stock(stock, date)
         else:
-            print("Last stored article date: ", last_stored_article_date)
+            print("Last stored article date for % s: % s" % (stock, last_stored_article_date))
             articles = get_articles_for_stock(stock, last_stored_article_date)
             
         # Fix Later: can be more efficient by passing stock name and list of articles per stock to function
