@@ -8,7 +8,7 @@ backcall==0.2.0
 beautifulsoup4==4.8.1
 bleach==3.2.2
 blis==0.7.4
-bottle==0.12.19
+bottle==0.12.20
 catalogue==2.0.1
 certifi==2019.11.28
 cffi==1.14.4
